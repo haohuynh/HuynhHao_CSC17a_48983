@@ -1,0 +1,6 @@
+Sentence Filter.
+ This Program Asks The User For Two File Names. the first file will be opened for
+ input and the second FILE will be opened for output. (it will be assumed that the first file
+ contains sentences that end with a PERIORD.) the program will read the contents of the first
+ file and change all the letters to LOWERCASE except the first letter of each sentence, which
+ should be made UPPERCASE. the revised contents should be stored in the second file.
