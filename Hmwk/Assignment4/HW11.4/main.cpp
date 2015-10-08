@@ -7,6 +7,8 @@
 
 #include <cstdlib>
 #include <iostream>
+#include <vector>
+#include <algorithm>
 
 using namespace std;
 
@@ -40,7 +42,7 @@ void validateTemp(float& temp) {
     //The maximum of a degree in Fahrenheit
     static const int MAX_FAH_DEGREE = 140;
 
-    if ((temp < MIN_FAH_DEGREE) || (temp > <MAX_FAH_DEGREE)) {
+    if ((temp < MIN_FAH_DEGREE) || (temp > MAX_FAH_DEGREE)) {
         temp = 0;
     }
 
@@ -67,47 +69,117 @@ void getWeatherData(WeatherData* weaData) {
 
 }
 
-/**
- * This function calculates and displays the average monthly rainfall and 
- * the total rainfall for the year.
- * @param weaDats : The weather data for an entire year 
- * @param size : Months in a year
+/*The helper is used for comparing temperatures of a vector of pairs<month, high temperature>
+ *The temperature are sorted in a descending order
  */
-void calRainStat(WeatherData** weaDats, const char** months, int size = 12) {
+bool cmpHTemp(const pair<int, int> &v1, const pair<int, int> &v2) {
+    return v1.second > v2.second;
+}
+
+/*The helper is used for comparing temperatures of a vector of pairs<month, low temperature>
+ *The temperature are sorted in a ascending order
+ */
+bool cmpLTemp(const pair<int, int> &v1, const pair<int, int> &v2) {
+    return v1.second < v2.second;
+}
+
+/**
+ * This function show a set of months on the console by their names
+ * @param months : A list of months
+ * @param mNames : The names of months in a year
+ */
+void showMonths(vector<int> months, const char* mNames[]) {
+
+    for (int i = 0; i < months.size(); i++) {
+        cout << mNames[months[i]] << " ";
+    }
+    cout << endl;
+}
+
+/**
+ * This function calculates and displays: 
+ *  the average monthly rainfall
+ *  the total rainfall for the year
+ *  
+ * @param weaDats: The weather data for an entire year 
+ * @param mNames : The names of months in a year
+ * @param nMonths: The number of months in a year
+ */
+void calWeatherStats(WeatherData** weaDats, const char* mNames[], int nMonths = 12) {
     //The total rain fall in a year
     float yTotRain = 0;
 
-    //The maximum temperature in a year
-    float yMaxTemp;
+    //The highest temperature in a year
+    float yMaxTmp;
 
-    //The month that has the yMaxTemp
-    int mMaxTemp;
+    //The lowest temperature in a year
+    float yMinTmp;
 
-    //The minimum temperature in a year
-    float yMinTemp;
+    //The sorted (by temperature descending order) vector of pairs of months and their high temperatures
+    vector< pair<int, float> > sorHTmp;
 
-    //The month that has the yMinTemp
-    int mMinTemp;
+    //The sorted (by temperature ascending order) vector of pairs of months and their low temperatures
+    vector< pair<int, float> > sorLTmp;
+
+    //The iterator is used for traveling sorHTmp and sorLTmp
+    vector< pair<int, float> > ::iterator sTmpIt;
+
+    //List of the months having the highest temperature in a year
+    vector<int> hTMons;
+
+    //List of the months having the lowest temperature in a year
+    vector<int> lTMons;
 
     //The total of monthly average temperatures
     float yTotATm = 0;
 
-    yMaxTemp = weaDats[0]->hTemp;
-    mMaxTemp = 0;
-
-    yMinTemp = weaDats[0]->lTemp;
-    mMinTemp = 0;
-
-    for (int i = 0; i < size; i++) {
+    for (int i = 0; i < nMonths; i++) {
+        //Accumulating the total rain
         yTotRain += weaDats[i]->totRain;
 
-        //Using map ?? to find the min and max temperature months
+        //Initializing sorHTmp and sorLTmp
+        sorHTmp.push_back(pair<int, float>(i, weaDats[i]->hTemp));
+        sorLTmp.push_back(pair<int, float>(i, weaDats[i]->lTemp));
 
+        //Accumulating the average temperatures 
         yTotATm += weaDats[i]->aveTemp;
     }
 
+    //Sort all high temperatures in a year by descending order
+    sort(sorHTmp.begin(), sorHTmp.end(), cmpHTemp);
+
+    //Sort all low temperatures in a year by ascending order
+    sort(sorLTmp.begin(), sorLTmp.end(), cmpLTemp);
+
+    yMaxTmp = sorHTmp.begin()->second;
+    yMinTmp = sorLTmp.begin()->second;
+
+    //Collecting months that have the highest temperature
+    for (sTmpIt = sorHTmp.begin(); sTmpIt != sorHTmp.end(); sTmpIt++) {
+        if (yMaxTmp == sTmpIt->second) {
+            hTMons.push_back(sTmpIt->first);
+        } else {
+            break;
+        }
+    }
+
+    //Collecting months that have the lowest temperature
+    for (sTmpIt = sorLTmp.begin(); sTmpIt != sorLTmp.end(); sTmpIt++) {
+        if (yMinTmp == sTmpIt->second) {
+            lTMons.push_back(sTmpIt->first);
+        } else {
+            break;
+        }
+    }
+
+    cout << "Weather Statistics\n";
+    cout << "The average monthly rainfall is: " << (yTotRain / nMonths) << endl;
     cout << "The total rainfall for the year is: " << yTotRain << endl;
-    cout << "The average monthly rainfall for the year is: " << (yTotRain / size) << endl;
+    cout << "The month(s) that has(have) the highest valid temperature (" << yMaxTmp << ") is(are):\n";
+    showMonths(hTMons, mNames);
+    cout << "The month(s) that has(have) the lowest valid temperature (" << yMinTmp << ") is(are):\n";
+    showMonths(lTMons, mNames);
+    cout << "The average of all the monthly average temperatures is: " << (yTotATm / nMonths) << endl;
 }
 
 /*
@@ -134,21 +206,19 @@ int main(int argc, char** argv) {
     //The total months in a year
     const int MONTHS_IN_YEAR = 12;
 
+    //The names of months in a year
+    const char* months[MONTHS_IN_YEAR] = {"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
+
     //The 12 structures that holds weather data for an entire year
     WeatherData * weaDats[MONTHS_IN_YEAR];
 
-    //The names of months in a year
-    char* months[MONTHS_IN_YEAR] = {"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
-
     for (int i = 0; i < MONTHS_IN_YEAR; i++) {
-        cout << "Please enter the weather data of " << months[i] << endl;
+        cout << "\nPlease enter the weather data of " << months[i] << endl;
         weaDats[i] = new WeatherData;
         getWeatherData(weaDats[i]);
     }
 
-    calRainStat(weaDats);
-
-
+    calWeatherStats(weaDats, months);
 
     return 0;
 }
