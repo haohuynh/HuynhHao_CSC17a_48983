@@ -18,7 +18,7 @@ typedef struct DIVISION {
 
     const static char* NAMES[NUM_DIVISION];
 
-    char divName[5];
+    char* divName;
 
 } Divsion;
 
@@ -64,12 +64,57 @@ void showSales(SalesData* salData) {
     cout << "Third-Quarter Sales: " << salData->tQSales << endl;
     cout << "Fourth-Quarter Sales: " << salData->foQSals << endl;
     cout << "Total Annual Sales: " << salData->totASls << endl;
-    cout << "Average Quarterly Sales : " << salData->totASls << endl;
+    cout << "Average Quarterly Sales : " << salData->aveQSls << endl;
     cout << "--------------------------" << endl;
 }
 
-void calSales(SalesData* salData){
-    
+/**
+ * This function calculated the total annual and averages quarterly sales
+ * @param salData
+ */
+void calSales(SalesData* salData) {
+
+    salData->totASls = salData->fQSales + salData->sQSales
+            + salData->tQSales + salData->foQSals;
+
+    salData->aveQSls = salData->totASls / 4;
+
+}
+
+/**
+ * This Input Validation function does not accept negative numbers 
+ * for any sales figures. In case of the error, it reassigns sales to zero
+ * @param sales
+ */
+void validateSales(float& sales) {
+    if (sales < 0) {
+        sales = 0;
+    }
+}
+
+/**
+ * This function asks for the four quarters’ sales figures for each division
+ * @param salData
+ */
+void getQSales(SalesData* salData) {
+
+    cout << "This is division: " << salData->div.divName << endl;
+
+    cout << "Please enter the First-Quarter Sales: ";
+    cin >> salData->fQSales;
+    validateSales(salData->fQSales);
+
+    cout << "Please enter the Second-Quarter Sales: ";
+    cin >> salData->sQSales;
+    validateSales(salData->sQSales);
+
+    cout << "Please enter the Third-Quarter Sales: ";
+    cin >> salData->tQSales;
+    validateSales(salData->tQSales);
+
+    cout << "Please enter the Fourth-Quarter Sales: ";
+    cin >> salData->foQSals;
+    validateSales(salData->foQSals);
 }
 
 /*
@@ -92,8 +137,18 @@ void calSales(SalesData* salData){
  */
 int main(int argc, char** argv) {
 
+    SalesData * salDats[Divsion::NUM_DIVISION];
 
+    for (int i = 0; i < Divsion::NUM_DIVISION; i++) {
+        salDats[i] = new SalesData;
+        salDats[i]->div.divName = const_cast<char*> (Divsion::NAMES[i]);
+        getQSales(salDats[i]);
+        calSales(salDats[i]);
+    }
 
+    for (int i = 0; i < Divsion::NUM_DIVISION; i++) {
+        showSales(salDats[i]);
+    }
 
     return 0;
 }
