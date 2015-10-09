@@ -30,10 +30,19 @@ typedef struct SPEAKERSDATA {
 } SpeakersData;
 
 /**
+ * This helper function cleans up cin buffer to get a new input exactly
+ */
+void cleanCBuffer() {
+    cin.ignore();
+    cin.clear();
+}
+
+/**
  * This function asks the user to enter all the data about a speaker
  * @param spkBur : A Speaker Data record
  */
 void getSpeakerData(SpeakersData* spkData) {
+
     cout << "Please enter a speaker's name: ";
     getline(cin, spkData->name);
 
@@ -43,9 +52,16 @@ void getSpeakerData(SpeakersData* spkData) {
     cout << "Please enter the speaker's speaking topic: ";
     getline(cin, spkData->spTopic);
 
-    cout << "Please enter a required fee: ";
+    cout << "Please enter a required fee (a negative number is unacceptable): ";
     cin >> spkData->fee;
+    cleanCBuffer();
 
+    /*Assuring the user enters valid data for all the fields.*/
+    if (spkData->fee < 0 || spkData->name.empty()
+            || spkData->telNum.empty() || spkData->spTopic.empty()) {
+        cout << "Invalid input please reenter the data again!\n";
+        getSpeakerData(spkData);
+    }
 }
 
 /**
@@ -55,6 +71,7 @@ void getSpeakerData(SpeakersData* spkData) {
  */
 void displaySpeakersData(SpeakersData** spkData, const int nSpkers = 10) {
 
+    cout << "************ The records of speakers ************ \n";
     for (int i = 0; i < nSpkers; i++) {
         cout << "------------------------------------\n";
         cout << "This is speaker number: " << i + 1 << endl;
@@ -89,23 +106,52 @@ int main(int argc, char** argv) {
     // The array of all data about speakers
     SpeakersData * spkDtAr[NUM_SPEAKERS];
 
-    // A
-    char uOp;
-    
+    // The user's answer
+    int uAns;
+
     for (int i = 0; i < NUM_SPEAKERS; i++) {
-        cout << "Please enter the following data for the speaker number " << i + 1 << endl;
+        cout << "\nPlease enter the following data for the speaker number " << i + 1 << endl;
         spkDtAr[i] = new SpeakersData;
         getSpeakerData(spkDtAr[i]);
     }
-    
-    
-    
-    displaySpeakersData(spkDtAr);
 
-    do{
-        
-    }while ();
-    
+    do {
+
+        cout << "\n\n\n";
+        cout << "Speakers’ Bureau Menu:\n";
+        cout << "1. Show recored data about all speakers.\n";
+        cout << "2. Edit a speaker's data.\n";
+        cout << "3. Exit.\n";
+        cin >> uAns;
+
+        switch (uAns) {
+            case 1:
+            {
+                displaySpeakersData(spkDtAr);
+                break;
+            }
+            case 2:
+            {
+                cout << "Please enter the speaker number for a record that you want to change or enter -1 to stop: ";
+                cin >> uAns;
+                cleanCBuffer();
+
+                if (uAns <= 0 || uAns > NUM_SPEAKERS) {
+                    uAns = -1;
+                } else {
+                    cout << "Editing the speaker number: " << uAns << endl;
+                    getSpeakerData(spkDtAr[uAns - 1]);
+                }
+                break;
+            }
+            default:
+            {
+                uAns = -1;
+                break;
+            }
+        }
+    } while (uAns != -1);
+
     return 0;
 }
 
