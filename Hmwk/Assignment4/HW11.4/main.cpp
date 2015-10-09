@@ -175,9 +175,9 @@ void calWeatherStats(WeatherData** weaDats, const char* mNames[], int nMonths = 
     cout << "Weather Statistics\n";
     cout << "The average monthly rainfall is: " << (yTotRain / nMonths) << endl;
     cout << "The total rainfall for the year is: " << yTotRain << endl;
-    cout << "The month(s) that has(have) the highest valid temperature (" << yMaxTmp << ") is(are):\n";
+    cout << "The month(s) that has(have) the highest valid temperature (" << yMaxTmp << " F) is(are):\n";
     showMonths(hTMons, mNames);
-    cout << "The month(s) that has(have) the lowest valid temperature (" << yMinTmp << ") is(are):\n";
+    cout << "The month(s) that has(have) the lowest valid temperature (" << yMinTmp << " F) is(are):\n";
     showMonths(lTMons, mNames);
     cout << "The average of all the monthly average temperatures is: " << (yTotATm / nMonths) << endl;
 }

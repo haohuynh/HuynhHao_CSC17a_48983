@@ -63,12 +63,12 @@ int main(int argc, char** argv) {
     firstMovie->title = "Test1T";
     firstMovie->director = "Test1D";
     firstMovie->yearRel = 2015;
-    firstMovie->runTime = 2;
+    firstMovie->runTime = 120;
 
     secondMovie->title = "Test2T";
     secondMovie->director = "Test2D";
     secondMovie->yearRel = 2014;
-    secondMovie->runTime = 3.5;
+    secondMovie->runTime = 180;
 
     showMovie(firstMovie);
     showMovie(secondMovie);
