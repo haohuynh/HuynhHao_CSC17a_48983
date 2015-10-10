@@ -9,6 +9,7 @@
 #define	POKERCARDTABLE_H
 
 #include <vector>
+#include <string>
 using namespace std;
 
 /*
@@ -52,17 +53,22 @@ private:
     /*
      * The total of cards are 52
      */
-    const int CARDS_TOTAL = 52;
+    static const int CARDS_TOTAL = 52;
 
     /*
      * There are thirteen ranks per suit.
      */
-    const int RANKS_PER_SUIT = 13;
+    static const int RANKS_PER_SUIT = 13;
 
     /*
      * Maximum poker cards for each player.
      */
     static const int FIVE_POKER_CARDS = 5;
+
+    /*
+     * There are 4 suits in 52 desk cards.
+     */
+    static const int SUIT_MAX = 4;
 
     /*
      * The first poker card index
@@ -90,6 +96,16 @@ private:
     static const int INDEX_4 = 4;
 
     /*
+     * Labels for displaying a card suit.
+     */
+    static const string CARD_SUIT_LABELS[SUIT_MAX];
+
+    /*
+     * Labels for displaying a card rank.
+     */
+    static const string CARD_RANK_LABELS[RANKS_PER_SUIT];
+
+    /*
      * Vector contains all the user's current cards
      */
     vector<Card> crCards;
@@ -113,32 +129,112 @@ public:
 
 private:
     /**
-     * This function create a Card by mapping the index to a Card structure through
+     * This function create a Card by mapping the id to a Card structure through
      * the logical Card Table
-     * @param index
+     * @param id
      * @return Card
      */
-    Card populateCardBy(int index);
+    Card populateCardBy(int id);
 
     /**
-     * This function uses the index to check if a card has been dealt
-     * @param index : the Card Table index
-     * @return true/false
+     * This function uses the id to check if a card has been dealt
+     * @param id : the Card Table index
+     * @return true/false : A card is existed or not
      */
-    bool isCardExistedBy(int index);
+    bool isCardExistedBy(int id);
 
     /**
      * This function tries to dealt a new card to the current hand without
      * duplicating any existed one 
-     * @param index : the Card Table index
+     * @param id : the Card Table index
      * @return true/false : Insertion success or not
      */
-    bool isCardInsertedBy(int index);
+    bool isCardInsertedBy(int id);
 
     /**
-     * Dealt first five poker cards for the player
+     * This function deals first five poker cards for the player
      */
-    void dealtCards();
+    void dealsCards();
+
+    /**
+     *  This function sends all current hand cards to the console 
+     */
+    void displayPlayerCards();
+
+    /**
+     * This function generates a new card for the replacing process.
+     * The new one should not be duplicated with any card in the current hand
+     * @return a new Card structure
+     */
+    Card dealsNewCard();
+
+    /**
+     * This function generates a new one that has not been dealt before
+     * for the replacement process
+     * @return a new Card structure
+     */
+    Card getNewCardForReplacement();
+
+    /**
+     * This functions collects all the cards user want to replace and 
+     * replaces them with new ones
+     */
+    void replaceCards();
+
+    /**
+     * This functions creates a list of current hand cards sorted by rank.
+     */
+    void sortCardsByRank();
+
+    /**
+     * This functions creates a list of current hand cards sorted by suit.
+     */
+    void sortCardsBySuit();
+
+    /**
+     * Check for four of the same card in a rank
+     * Two cases: 4 + 1 or 1 + 4
+     * @return true/false
+     */
+    bool isFourOfAKind();
+
+    /**
+     * Check for 3 of the same card in a rank
+     * and 2 of the same card in another rank
+     * Two cases: 3 + 2 or 2 + 3
+     * @return true/false
+     */
+    bool isFullHouse();
+
+    /**
+     * Check for 3 of the same card after checking four of a kind and full house.
+     * Three cases: 3 + 1 + 1 or 
+     *              1 + 3 + 1 or
+     *              1 + 1 + 3.    
+     * @return true/false
+     */
+    bool isThreeOfAKind();
+
+    /**
+     * Check for 2 different pairs after checking four of a kind, full house, 
+     * and three of a kind.
+     * Three cases: 2 + 2 + 1 or
+     *              2 + 1 + 2 or
+     *              1 + 2 + 2.
+     * @return true/false
+     */
+    bool isTwoPairs();
+
+    /**
+     * Check for two of the same card after checking four of a kind, full house,
+     * three of a kind and two pairs
+     * Four cases: 2 + 1 + 1 + 1 or
+     *             1 + 2 + 1 + 1 or 
+     *             1 + 1 + 2 + 1 or 
+     *             1 + 1 + 1 + 2 or
+     * @return true/false
+     */
+    bool isPair();
 
 };
 
