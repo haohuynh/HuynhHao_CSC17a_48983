@@ -29,14 +29,15 @@ Card PokerCardTable::populateCardBy(int index) {
  */
 bool PokerCardTable::isCardExistedBy(int index) {
 
-    int size = crSRnks.size();
+    int size = crCards.size();
 
     for (int i = 0; i < size; i++) {
 
-        if (index == crSRnks[i].id) {
+        if (index == crCards[i].id) {
             return true;
         }
     }
+
     return false;
 }
 
@@ -45,18 +46,25 @@ bool PokerCardTable::isCardExistedBy(int index) {
  * @param index
  * @return 
  */
-bool PokerCardTable::insertCardBy(int index) {
+bool PokerCardTable::isCardInsertedBy(int index) {
 
-    //Do not insert any existing one 
+    //Do not insert any existing card 
     if (isCardExistedBy(index)) {
         return false;
     }
 
-    //Insert a completely new one
-    Card newCard = populateCardBy(index);
-
-    crCards.push_back(newCard);
-    crSRnks.push_back(newCard);
-
+    //Insert a completely new card
+    crCards.push_back(populateCardBy(index));
     return true;
+}
+
+/**
+ * Reference to the declaration
+ */
+void PokerCardTable::dealtCards() {
+
+    for (int i = 0; i < FIVE_POKER_CARDS; i++) {
+        while (!isCardInsertedBy(rand() % CARDS_TOTAL));
+    }
+
 }

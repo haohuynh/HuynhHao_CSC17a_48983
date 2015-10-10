@@ -50,6 +50,11 @@ class PokerCardTable {
 private:
 
     /*
+     * The total of cards are 52
+     */
+    const int CARDS_TOTAL = 52;
+
+    /*
      * There are thirteen ranks per suit.
      */
     const int RANKS_PER_SUIT = 13;
@@ -126,10 +131,14 @@ private:
      * This function tries to dealt a new card to the current hand without
      * duplicating any existed one 
      * @param index : the Card Table index
-     * @return true/false
+     * @return true/false : Insertion success or not
      */
-    bool insertCardBy(int index);
+    bool isCardInsertedBy(int index);
 
+    /**
+     * Dealt first five poker cards for the player
+     */
+    void dealtCards();
 
 };
 
