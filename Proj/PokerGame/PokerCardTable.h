@@ -108,17 +108,17 @@ private:
     /*
      * Vector contains all the user's current cards
      */
-    vector<Card> crCards;
+    vector<Card*> crCards;
 
     /*
      * Vector contains all the user's current cards sorted by rank
      */
-    vector<Card> crSRnks;
+    vector<Card*> crSRnks;
 
     /*
      * Vector contains all the user's current cards sorted by suit
      */
-    vector<Card> crSSuits;
+    vector<Card*> crSSuits;
 
 public:
 
@@ -127,6 +127,11 @@ public:
      */
     PokerCardTable();
 
+    /**
+     * This function interacts with players to drive them through a game
+     */
+    void populateConsole();
+
 private:
     /**
      * This function create a Card by mapping the id to a Card structure through
@@ -134,7 +139,7 @@ private:
      * @param id
      * @return Card
      */
-    Card populateCardBy(int id);
+    Card* populateCardBy(int id);
 
     /**
      * This function uses the id to check if a card has been dealt
@@ -166,14 +171,14 @@ private:
      * The new one should not be duplicated with any card in the current hand
      * @return a new Card structure
      */
-    Card dealsNewCard();
+    Card* dealsNewCard();
 
     /**
      * This function generates a new one that has not been dealt before
      * for the replacement process
      * @return a new Card structure
      */
-    Card getNewCardForReplacement();
+    Card* getNewCardForReplacement();
 
     /**
      * This functions collects all the cards user want to replace and 
@@ -236,8 +241,18 @@ private:
      */
     bool isPair();
 
-};
+    /**
+     * Check if the current hand win or lose
+     * @return true/false:  win/lose
+     */
+    bool isPlayerWin();
 
+    /**
+     *  Reset all the current cards for a new game
+     */
+    void clean();
+
+};
 
 #endif	/* POKERCARDTABLE_H */
 

@@ -21,7 +21,33 @@ const string PokerCardTable::CARD_RANK_LABELS[RANKS_PER_SUIT] = {"Ace", "Two", "
  * Reference to the declaration
  */
 PokerCardTable::PokerCardTable() {
+
+    //Seeding a value for the random function
     srand(time(NULL));
+}
+
+/**
+ * Reference to the declaration
+ */
+void PokerCardTable::populateConsole() {
+
+    //Dealing first five cards
+    dealsCards();
+
+    //Show the first five cards on console
+    displayPlayerCards();
+
+    //Interact with the player to change the existing cards if possible
+    replaceCards();
+
+    // Display new cards after the replacing process
+    displayPlayerCards();
+
+    //Check if the player win or not
+    isPlayerWin();
+
+    //Clean up the lists of cards 
+    clean();
 }
 
 /**
@@ -29,11 +55,11 @@ PokerCardTable::PokerCardTable() {
  * @param index
  * @return 
  */
-Card PokerCardTable::populateCardBy(int id) {
-    Card card;
-    card.id = id;
-    card.suit = static_cast<CARD_SUITS> (id / RANKS_PER_SUIT);
-    card.rank = static_cast<CARD_RANKS> (id % RANKS_PER_SUIT);
+Card* PokerCardTable::populateCardBy(int id) {
+    Card* card = new Card;
+    card->id = id;
+    card->suit = static_cast<CARD_SUITS> (id / RANKS_PER_SUIT);
+    card->rank = static_cast<CARD_RANKS> (id % RANKS_PER_SUIT);
     return card;
 }
 
@@ -48,7 +74,7 @@ bool PokerCardTable::isCardExistedBy(int id) {
 
     for (int i = 0; i < size; i++) {
 
-        if (id == crCards[i].id) {
+        if (id == crCards[i]->id) {
             return true;
         }
     }
@@ -93,8 +119,8 @@ void PokerCardTable::displayPlayerCards() {
 
     int size = crCards.size();
     for (int i = 0; i < size; i++) {
-        cout << "Card " << i + 1 << ": " << CARD_SUIT_LABELS[crCards[i].suit] << "-"
-                << CARD_RANK_LABELS[crCards[i].rank] << " \n";
+        cout << "Card " << i + 1 << ": " << CARD_SUIT_LABELS[crCards[i]->suit] << "-"
+                << CARD_RANK_LABELS[crCards[i]->rank] << " \n";
 
     }
 
@@ -103,7 +129,7 @@ void PokerCardTable::displayPlayerCards() {
 /**
  * Reference to the declaration
  */
-Card PokerCardTable::dealsNewCard() {
+Card* PokerCardTable::dealsNewCard() {
 
     int randId;
 
@@ -119,8 +145,8 @@ Card PokerCardTable::dealsNewCard() {
  * Reference to the declaration
  * @param index
  */
-Card PokerCardTable::getNewCardForReplacement() {
-    Card newCard = dealsNewCard();
+Card* PokerCardTable::getNewCardForReplacement() {
+    Card* newCard = dealsNewCard();
 
     //Collecting all cards that have been dealt to assure that there is no duplication happens
     crCards.push_back(newCard);
@@ -137,7 +163,7 @@ void PokerCardTable::replaceCards() {
     int nRCards;
 
     cout << "How many cards you want to replace? ";
-    PokerHelper::validateValueOf(nRCards, INDEX_1, FIVE_POKER_CARDS);
+    PokerHelper::validateValueOf(nRCards, INDEX_0, FIVE_POKER_CARDS);
 
     if (nRCards > 0) {
 
@@ -151,7 +177,7 @@ void PokerCardTable::replaceCards() {
          * Create a copy of all current hand cards, because crCards will be used for 
          * containing the first five cards and new cards for the replacement process.
          */
-        vector<Card> bkCrCds(crCards);
+        vector<Card*> bkCrCds(crCards);
 
         if (nRCards < FIVE_POKER_CARDS) { //Replace any 1,2,3, or 4 cards
 
@@ -190,12 +216,12 @@ void PokerCardTable::replaceCards() {
  */
 void PokerCardTable::sortCardsByRank() {
 
-    vector<Card>::iterator cardIt;
+    vector<Card*>::iterator cardIt;
 
     for (int i = 0; i < FIVE_POKER_CARDS; i++) {
 
         for (cardIt = crSRnks.begin(); (cardIt != crSRnks.end())
-                && (cardIt->rank < crCards[i].rank); cardIt++);
+                && ((*cardIt)->rank < crCards[i]->rank); cardIt++);
 
         crSRnks.insert(cardIt, crCards[i]);
     }
@@ -206,12 +232,12 @@ void PokerCardTable::sortCardsByRank() {
  */
 void PokerCardTable::sortCardsBySuit() {
 
-    vector<Card>::iterator cardIt;
+    vector<Card*>::iterator cardIt;
 
     for (int i = 0; i < FIVE_POKER_CARDS; i++) {
 
         for (cardIt = crSSuits.begin(); (cardIt != crSSuits.end())
-                && (cardIt->suit < crCards[i].suit); cardIt++);
+                && ((*cardIt)->suit < crCards[i]->suit); cardIt++);
 
         crSSuits.insert(cardIt, crCards[i]);
     }
@@ -224,16 +250,16 @@ void PokerCardTable::sortCardsBySuit() {
 bool PokerCardTable::isFourOfAKind() {
 
     //Case: 4 + 1 
-    if ((crSRnks[INDEX_0].rank == crSRnks[INDEX_1].rank)
-            && (crSRnks[INDEX_1].rank == crSRnks[INDEX_2].rank)
-            && (crSRnks[INDEX_2].rank == crSRnks[INDEX_3].rank)) {
+    if ((crSRnks[INDEX_0]->rank == crSRnks[INDEX_1]->rank)
+            && (crSRnks[INDEX_1]->rank == crSRnks[INDEX_2]->rank)
+            && (crSRnks[INDEX_2]->rank == crSRnks[INDEX_3]->rank)) {
         return true;
     }
 
     //Case 1 + 4
-    if ((crSRnks[INDEX_1].rank == crSRnks[INDEX_2].rank)
-            && (crSRnks[INDEX_2].rank == crSRnks[INDEX_3].rank)
-            && (crSRnks[INDEX_3].rank == crSRnks[INDEX_4].rank)) {
+    if ((crSRnks[INDEX_1]->rank == crSRnks[INDEX_2]->rank)
+            && (crSRnks[INDEX_2]->rank == crSRnks[INDEX_3]->rank)
+            && (crSRnks[INDEX_3]->rank == crSRnks[INDEX_4]->rank)) {
         return true;
     }
 
@@ -247,16 +273,16 @@ bool PokerCardTable::isFourOfAKind() {
 bool PokerCardTable::isFullHouse() {
 
     //Case 3 + 2
-    if ((crSRnks[INDEX_0].rank == crSRnks[INDEX_1].rank)
-            && (crSRnks[INDEX_1].rank == crSRnks[INDEX_2].rank)
-            && (crSRnks[INDEX_3].rank == crSRnks[INDEX_4].rank)) {
+    if ((crSRnks[INDEX_0]->rank == crSRnks[INDEX_1]->rank)
+            && (crSRnks[INDEX_1]->rank == crSRnks[INDEX_2]->rank)
+            && (crSRnks[INDEX_3]->rank == crSRnks[INDEX_4]->rank)) {
         return true;
     }
 
     //Case 2 + 3
-    if ((crSRnks[INDEX_0].rank == crSRnks[INDEX_1].rank)
-            && (crSRnks[INDEX_2].rank == crSRnks[INDEX_3].rank)
-            && (crSRnks[INDEX_3].rank == crSRnks[INDEX_4].rank)) {
+    if ((crSRnks[INDEX_0]->rank == crSRnks[INDEX_1]->rank)
+            && (crSRnks[INDEX_2]->rank == crSRnks[INDEX_3]->rank)
+            && (crSRnks[INDEX_3]->rank == crSRnks[INDEX_4]->rank)) {
         return true;
     }
 
@@ -270,20 +296,20 @@ bool PokerCardTable::isFullHouse() {
 bool PokerCardTable::isThreeOfAKind() {
 
     //Case 3 + 1 + 1
-    if ((crSRnks[INDEX_0].rank == crSRnks[INDEX_1].rank)
-            && (crSRnks[INDEX_1].rank == crSRnks[INDEX_2].rank)) {
+    if ((crSRnks[INDEX_0]->rank == crSRnks[INDEX_1]->rank)
+            && (crSRnks[INDEX_1]->rank == crSRnks[INDEX_2]->rank)) {
         return true;
     }
 
     //Case 1 + 3 + 1
-    if ((crSRnks[INDEX_1].rank == crSRnks[INDEX_2].rank)
-            && (crSRnks[INDEX_2].rank == crSRnks[INDEX_3].rank)) {
+    if ((crSRnks[INDEX_1]->rank == crSRnks[INDEX_2]->rank)
+            && (crSRnks[INDEX_2]->rank == crSRnks[INDEX_3]->rank)) {
         return true;
     }
 
     //Case 1 + 1 + 3
-    if ((crSRnks[INDEX_2].rank == crSRnks[INDEX_3].rank)
-            && (crSRnks[INDEX_3].rank == crSRnks[INDEX_4].rank)) {
+    if ((crSRnks[INDEX_2]->rank == crSRnks[INDEX_3]->rank)
+            && (crSRnks[INDEX_3]->rank == crSRnks[INDEX_4]->rank)) {
         return true;
     }
 
@@ -297,20 +323,20 @@ bool PokerCardTable::isThreeOfAKind() {
 bool PokerCardTable::isTwoPairs() {
 
     //Case 2 + 2 + 1
-    if ((crSRnks[INDEX_0].rank == crSRnks[INDEX_1].rank)
-            && (crSRnks[INDEX_2].rank == crSRnks[INDEX_3].rank)) {
+    if ((crSRnks[INDEX_0]->rank == crSRnks[INDEX_1]->rank)
+            && (crSRnks[INDEX_2]->rank == crSRnks[INDEX_3]->rank)) {
         return true;
     }
 
     //Case 2 + 1 + 2
-    if ((crSRnks[INDEX_0].rank == crSRnks[INDEX_1].rank)
-            && (crSRnks[INDEX_3].rank == crSRnks[INDEX_4].rank)) {
+    if ((crSRnks[INDEX_0]->rank == crSRnks[INDEX_1]->rank)
+            && (crSRnks[INDEX_3]->rank == crSRnks[INDEX_4]->rank)) {
         return true;
     }
 
     //Case 1 + 2 + 2
-    if ((crSRnks[INDEX_1].rank == crSRnks[INDEX_2].rank)
-            && (crSRnks[INDEX_3].rank == crSRnks[INDEX_4].rank)) {
+    if ((crSRnks[INDEX_1]->rank == crSRnks[INDEX_2]->rank)
+            && (crSRnks[INDEX_3]->rank == crSRnks[INDEX_4]->rank)) {
         return true;
     }
 
@@ -324,24 +350,68 @@ bool PokerCardTable::isTwoPairs() {
 bool PokerCardTable::isPair() {
 
     //Case: 2 + 1 + 1 + 1
-    if (crSRnks[INDEX_0].rank == crSRnks[INDEX_1].rank) {
+    if (crSRnks[INDEX_0]->rank == crSRnks[INDEX_1]->rank) {
         return true;
     }
 
     //Case: 1 + 2 + 1 + 1 
-    if (crSRnks[INDEX_1].rank == crSRnks[INDEX_2].rank) {
+    if (crSRnks[INDEX_1]->rank == crSRnks[INDEX_2]->rank) {
         return true;
     }
 
     //Case: 1 + 1 + 2 + 1 
-    if (crSRnks[INDEX_2].rank == crSRnks[INDEX_3].rank) {
+    if (crSRnks[INDEX_2]->rank == crSRnks[INDEX_3]->rank) {
         return true;
     }
 
     //Case: 1 + 1 + 1 + 2 
-    if (crSRnks[INDEX_3].rank == crSRnks[INDEX_4].rank) {
+    if (crSRnks[INDEX_3]->rank == crSRnks[INDEX_4]->rank) {
         return true;
     }
 
     return false;
 }
+
+/**
+ * Reference to the declaration
+ * @return true/false: win/lose
+ */
+bool PokerCardTable::isPlayerWin() {
+
+    //Sorting the current cards for checking a result
+    sortCardsByRank();
+    sortCardsBySuit();
+
+    if (isFourOfAKind()) {
+        cout << "Four of the same kind!\n";
+
+    } else if (isFullHouse()) {
+        cout << "Full house!\n";
+
+    } else if (isThreeOfAKind()) {
+        cout << "Three of the same kind!\n";
+
+    } else if (isTwoPairs()) {
+        cout << "Two pairs!\n";
+
+    } else if (isPair()) {
+        cout << "A pair!\n";
+
+    } else {
+        cout << "You lose !!!";
+        return false;
+    }
+
+    cout << "Congratulation! You are the winner !!!";
+    return true;
+}
+
+/**
+ * Reference to the declaration
+ */
+void PokerCardTable::clean() {
+    crCards.clear();
+    crSRnks.clear();
+    crSSuits.clear();
+}
+
