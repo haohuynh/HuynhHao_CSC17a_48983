@@ -197,14 +197,43 @@ private:
     void sortCardsBySuit();
 
     /**
-     * Check for four of the same card in a rank
+     * This functions check if there is an ACE, and all five poker cards are flush and straight
+     * @return true/false
+     */
+    bool isRoyalFlush();
+
+    /**
+     * This functions check if all five poker card are flush and straight
+     * @return true/false
+     */
+    bool isStraightFlush();
+
+    /**
+     * This function checks if all five poker cards have the same suit.
+     * After sorting by suit, if the lowest card has the same suit as the highest one,
+     * then all five poker cards will have the same suit.
+     * @return true/false
+     */
+    bool isFlush();
+
+    /**
+     * This function checks if all five poker cards make a straight:
+     * Case 1: There is an ACE and the other fours are {TEN, JACK, QUEEN, KING}
+     *                                              or {TWO, THREE, FOUR, FIVE}
+     * Case 2: The ranks of all cards are increasing continuously 
+     * @return true/false
+     */
+    bool isStraight();
+
+    /**
+     * This function checks for four of the same card in a rank
      * Two cases: 4 + 1 or 1 + 4
      * @return true/false
      */
     bool isFourOfAKind();
 
     /**
-     * Check for 3 of the same card in a rank
+     * This function checks for 3 of the same card in a rank
      * and 2 of the same card in another rank
      * Two cases: 3 + 2 or 2 + 3
      * @return true/false
@@ -212,7 +241,7 @@ private:
     bool isFullHouse();
 
     /**
-     * Check for 3 of the same card after checking four of a kind and full house.
+     * This function checks for 3 of the same card after checking four of a kind and full house.
      * Three cases: 3 + 1 + 1 or 
      *              1 + 3 + 1 or
      *              1 + 1 + 3.    
@@ -221,7 +250,7 @@ private:
     bool isThreeOfAKind();
 
     /**
-     * Check for 2 different pairs after checking four of a kind, full house, 
+     * This function checks for 2 different pairs after checking four of a kind, full house, 
      * and three of a kind.
      * Three cases: 2 + 2 + 1 or
      *              2 + 1 + 2 or
@@ -231,7 +260,7 @@ private:
     bool isTwoPairs();
 
     /**
-     * Check for two of the same card after checking four of a kind, full house,
+     * This function checks for two of the same card after checking four of a kind, full house,
      * three of a kind and two pairs
      * Four cases: 2 + 1 + 1 + 1 or
      *             1 + 2 + 1 + 1 or 

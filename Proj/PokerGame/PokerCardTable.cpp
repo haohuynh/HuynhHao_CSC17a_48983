@@ -247,6 +247,63 @@ void PokerCardTable::sortCardsBySuit() {
  * Reference to the declaration
  * @return true/false
  */
+bool PokerCardTable::isRoyalFlush() {
+    return ((crSRnks[INDEX_0]->rank == ACE) && isStraightFlush());
+}
+
+/**
+ * Reference to the declaration
+ * @return true/false
+ */
+bool PokerCardTable::isStraightFlush() {
+    return (isFlush() && isStraight());
+}
+
+/**
+ * Reference to the declaration
+ * @return true/false
+ */
+bool PokerCardTable::isFlush() {
+    return (crSSuits[INDEX_0]->suit == crSSuits[INDEX_4]->suit);
+}
+
+/**
+ * Reference to the declaration
+ * @return true/false
+ */
+bool PokerCardTable::isStraight() {
+
+    if (crSRnks[INDEX_0]->rank == ACE) { //Case 1 {ACE, TEN, JACK, QUEEN, KING} 
+        //or {ACE, TWO, THREE, FOUR, FIVE}
+
+        if (crSRnks[INDEX_1]->rank == TEN && crSRnks[INDEX_2]->rank == JACK
+                && crSRnks[INDEX_3]->rank == QUEEN && crSRnks[INDEX_4]->rank == KING) {
+            return true;
+        }
+
+        if (crSRnks[INDEX_1]->rank == TWO && crSRnks[INDEX_2]->rank == THREE
+                && crSRnks[INDEX_3]->rank == FOUR && crSRnks[INDEX_4]->rank == FIVE) {
+            return true;
+        }
+
+        return false;
+
+    } else {//Case 2 Continuously Increasing
+        //rc: A rank counter
+        for (int rc = (crSRnks[INDEX_0]->rank + 1), i = 1; i < FIVE_POKER_CARDS; rc++, i++) {
+            if (rc != crSRnks[i]->rank) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+}
+
+/**
+ * Reference to the declaration
+ * @return true/false
+ */
 bool PokerCardTable::isFourOfAKind() {
 
     //Case: 4 + 1 
@@ -382,7 +439,19 @@ bool PokerCardTable::isPlayerWin() {
     sortCardsByRank();
     sortCardsBySuit();
 
-    if (isFourOfAKind()) {
+    if (isRoyalFlush()) {
+        cout << "A Royal Flush!!!\n";
+
+    } else if (isStraightFlush()) {
+        cout << "A Straight Flush!!\n";
+
+    } else if (isFlush()) {
+        cout << "A Flush!\n";
+
+    } else if (isStraight()) {
+        cout << "A Straight!\n";
+
+    } else if (isFourOfAKind()) {
         cout << "Four of the same kind!\n";
 
     } else if (isFullHouse()) {
@@ -398,11 +467,11 @@ bool PokerCardTable::isPlayerWin() {
         cout << "A pair!\n";
 
     } else {
-        cout << "You lose !!!";
+        cout << "You lose !!!\n";
         return false;
     }
 
-    cout << "Congratulation! You are the winner !!!";
+    cout << "Congratulation! You are the winner !!!\n";
     return true;
 }
 
