@@ -8,6 +8,9 @@
 #ifndef POKERHELPER_H
 #define	POKERHELPER_H
 
+#include <string>
+#include <fstream>
+
 class PokerHelper {
 private:
     /*
@@ -15,7 +18,13 @@ private:
      */
     static const int MAX_MONITOR_LINES = 200;
 
+    /**
+     * The default file that stores the current bank roll
+     */
+    static const std::string DEFAULT_FILE_NAME;
+
 public:
+
     /**
      * Clear the screen after a certain event. 
      */
@@ -29,6 +38,19 @@ public:
      */
     static void validateValueOf(int& number, int lowerLimit, int upperLimit);
 
+    /**
+     * This function saves the current bank roll to a file 
+     * @param crBkRoll : the current bank roll 
+     * @param fName : a file name
+     */
+    static void save(int crBkRoll);
+
+    /**
+     * This function loads the current bank roll from a file
+     * @param crBkRoll : the current bank roll 
+     * @param fName : a file name
+     */
+    static void load(int& crBkRoll);
 };
 
 

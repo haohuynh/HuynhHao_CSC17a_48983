@@ -29,7 +29,10 @@ PokerCardTable::PokerCardTable() {
 /**
  * Reference to the declaration
  */
-void PokerCardTable::populateConsole() {
+bool PokerCardTable::populateConsole() {
+
+    //Clean up the lists of cards 
+    clean();
 
     //Dealing first five cards
     dealsCards();
@@ -44,10 +47,8 @@ void PokerCardTable::populateConsole() {
     displayPlayerCards();
 
     //Check if the player win or not
-    isPlayerWin();
+    return isPlayerWin();
 
-    //Clean up the lists of cards 
-    clean();
 }
 
 /**

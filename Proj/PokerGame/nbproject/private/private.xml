@@ -9,22 +9,22 @@
             <url>PokerCardTable.cpp</url>
             <bookmark id="2">
                 <name/>
-                <line>109</line>
+                <line>110</line>
                 <key/>
             </bookmark>
             <bookmark id="1">
                 <name/>
-                <line>109</line>
+                <line>110</line>
                 <key/>
             </bookmark>
             <bookmark id="3">
                 <name/>
-                <line>109</line>
+                <line>110</line>
                 <key/>
             </bookmark>
             <bookmark id="4">
                 <name/>
-                <line>109</line>
+                <line>110</line>
                 <key/>
             </bookmark>
         </file>
@@ -32,7 +32,9 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
             <file>file:/C:/Users/HaoHuynh/Documents/RCC/CSC-17A/repo/HuynhHao_CSC17a_48983/Proj/PokerGame/PokerCardTable.h</file>
+            <file>file:/C:/Users/HaoHuynh/Documents/RCC/CSC-17A/repo/HuynhHao_CSC17a_48983/Proj/PokerGame/PokerHelper.cpp</file>
             <file>file:/C:/Users/HaoHuynh/Documents/RCC/CSC-17A/repo/HuynhHao_CSC17a_48983/Proj/PokerGame/PokerCardTable.cpp</file>
+            <file>file:/C:/Users/HaoHuynh/Documents/RCC/CSC-17A/repo/HuynhHao_CSC17a_48983/Proj/PokerGame/PokerHelper.h</file>
             <file>file:/C:/Users/HaoHuynh/Documents/RCC/CSC-17A/repo/HuynhHao_CSC17a_48983/Proj/PokerGame/main.cpp</file>
         </group>
     </open-files>

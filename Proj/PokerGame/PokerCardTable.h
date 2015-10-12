@@ -130,7 +130,7 @@ public:
     /**
      * This function interacts with players to drive them through a game
      */
-    void populateConsole();
+    bool populateConsole();
 
 private:
     /**
