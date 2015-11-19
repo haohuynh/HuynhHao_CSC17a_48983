@@ -15,7 +15,7 @@ public:
     CopyFileFilter();
     CopyFileFilter(const CopyFileFilter& orig);
     virtual ~CopyFileFilter();
-
+    
     virtual char transform(char ch);
 
 };

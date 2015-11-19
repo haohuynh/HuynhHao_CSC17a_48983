@@ -18,7 +18,7 @@ public:
     AbstractFileFilter(const AbstractFileFilter& orig);
     virtual ~AbstractFileFilter();
     
-    virtual void doFilter(ifstream &in, ofstream &out);
+    void doFilter(ifstream &in, ofstream &out);
 
 protected:    
     virtual char transform(char ch) = 0;

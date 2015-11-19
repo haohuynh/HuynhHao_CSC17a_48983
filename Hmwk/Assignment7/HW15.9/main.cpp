@@ -36,6 +36,11 @@ int main(int argc, char** argv) {
     in.open("FileFilter.txt");
     enFF->doFilter(in, outEn);
 
+    cout << "Please check the three below files for results:\n"
+            "1.CopyFileFilter.txt\n"
+            "2.UpperFileFilter.txt\n"
+            "3.EncryptionFileFilter.txt\n";
+    
     return 0;
 }
 
