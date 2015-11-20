@@ -74,7 +74,7 @@ public:
     /**
      * This function interacts with players to drive them through a game
      */
-    virtual bool populateConsole();
+    virtual short populateConsole();
 
 private:
     
@@ -189,9 +189,9 @@ private:
 
     /**
      * This function checks if the current hand win or lose
-     * @return true/false:  win/lose
+     * @return  1/0/-1:  win/lose/drawn
      */
-    virtual bool isPlayerWin();
+    virtual short isPlayerWin();
 
     /**
      * This function deallocates the memories of a set of elements in cards and clears the cards
@@ -199,13 +199,7 @@ private:
      * @param poss : a set of positions in cards
      */
     void deleteCardsBy(vector<Card*>& cards, const set<int>& poss);
-
-    /**
-     * This function deallocates the memories of all elements in cards and clears the cards
-     * @param cards : a vector of Card Structure pointers
-     */
-    void deleteCards(vector<Card*>& cards);
-
+   
     /**
      *  This function reset all the current cards for a new game
      */

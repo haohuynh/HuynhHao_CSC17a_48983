@@ -81,10 +81,10 @@ int main(int argc, char** argv) {
                 {
                     setUpGameScreen(crBkRoll, crrBet);
 
-                    if (pokCTab->populateConsole()) { //The player win a game
+                    if (pokCTab->populateConsole() == 1) { //The player win a game
                         crBkRoll += crrBet;
 
-                    } else {//The player lose a game
+                    } else if (pokCTab->populateConsole() == 0) {//The player lose a game
                         crBkRoll -= crrBet;
                     }
 

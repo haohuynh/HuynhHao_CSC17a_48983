@@ -19,7 +19,7 @@ PokerCardTable::~PokerCardTable() {
 /**
  * Reference to the declaration
  */
-bool PokerCardTable::populateConsole() {
+short PokerCardTable::populateConsole() {
 
     //Clean up the lists of cards 
     clean();
@@ -382,9 +382,9 @@ bool PokerCardTable::isPair() {
 
 /**
  * Reference to the declaration
- * @return true/false: win/lose
+ * @return  1/0/-1:  win/lose/drawn
  */
-bool PokerCardTable::isPlayerWin() {
+short PokerCardTable::isPlayerWin() {
 
     //Sorting the current cards for checking a result
     sortCardsByRank();
@@ -419,11 +419,11 @@ bool PokerCardTable::isPlayerWin() {
 
     } else {
         cout << "You lose !!!\n";
-        return false;
+        return 0;
     }
 
     cout << "Congratulation! You are the winner !!!\n";
-    return true;
+    return 1;
 }
 
 /**
@@ -435,20 +435,6 @@ void PokerCardTable::deleteCardsBy(vector<Card*>& cards, const set<int>& poss) {
 
     for (set<int>::iterator posIt = poss.begin(); posIt != poss.end(); posIt++) {
         delete cards[(*posIt) - 1];
-    }
-
-    cards.clear();
-}
-
-/**
- * Reference to the declaration
- * @param cards : a vector of Card Structure pointers
- */
-void PokerCardTable::deleteCards(vector<Card*>& cards) {
-    int size = cards.size();
-
-    for (int i = 0; i < size; i++) {
-        delete cards[i];
     }
 
     cards.clear();

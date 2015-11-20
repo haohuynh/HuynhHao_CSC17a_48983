@@ -89,3 +89,17 @@ AbstractCardTable::Card* AbstractCardTable::dealsNewCard() {
     return populateCardBy(randId);
 
 }
+
+/**
+ * Reference to the declaration
+ * @param cards : a vector of Card Structure pointers
+ */
+void AbstractCardTable::deleteCards(vector<Card*>& cards) {
+    int size = cards.size();
+
+    for (int i = 0; i < size; i++) {
+        delete cards[i];
+    }
+
+    cards.clear();
+}

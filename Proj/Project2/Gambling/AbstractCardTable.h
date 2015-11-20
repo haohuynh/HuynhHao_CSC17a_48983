@@ -94,7 +94,7 @@ public:
     /**
      * This function interacts with players to drive them through a game
      */
-    virtual bool populateConsole() = 0;
+    virtual short populateConsole() = 0;
 
 protected:
 
@@ -121,11 +121,17 @@ protected:
 
     /**
      * This function generates a new card for the replacing process.
-     * The new one should not be duplicated with any card in the current hand
+     * The new one should not be duplicated with any existing card.
      * @return a new Card structure
      */
     Card* dealsNewCard();
 
+     /**
+     * This function deallocates the memories of all elements in cards and clears the cards
+     * @param cards : a vector of Card Structure pointers
+     */
+    void deleteCards(vector<Card*>& cards);
+        
     /**
      * This function uses the id to check if a card has been dealt
      * @param id : the Card Table index
@@ -140,9 +146,9 @@ protected:
 
     /**
      * This function checks if the current hand win or lose
-     * @return true/false:  win/lose
+     * @return 1/0/-1:  win/lose/drawn
      */
-    virtual bool isPlayerWin() = 0;
+    virtual short isPlayerWin() = 0;
 
     /**
      *  This function reset all the current cards for a new game
