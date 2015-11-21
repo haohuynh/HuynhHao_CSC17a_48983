@@ -10,7 +10,6 @@
 
 #include <set>
 #include "AbstractCardTable.h"
-#include "CardTableHelper.h"
 using namespace std;
 
 /*
@@ -74,7 +73,7 @@ public:
     /**
      * This function interacts with players to drive them through a game
      */
-    virtual short populateConsole();
+    virtual CardTableHelper::GAME_BOOL populateConsole();
 
 private:
     
@@ -189,9 +188,9 @@ private:
 
     /**
      * This function checks if the current hand win or lose
-     * @return  1/0/-1:  win/lose/drawn
+     * @return  -1/0/1:  /drawn/lose/win/
      */
-    virtual short isPlayerWin();
+    virtual CardTableHelper::GAME_BOOL isPlayerWin();
 
     /**
      * This function deallocates the memories of a set of elements in cards and clears the cards

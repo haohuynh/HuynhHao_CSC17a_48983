@@ -13,6 +13,7 @@
 #include <vector>
 #include <string>
 #include <time.h>
+#include "CardTableHelper.h"
 using namespace std;
 
 /*              
@@ -94,7 +95,7 @@ public:
     /**
      * This function interacts with players to drive them through a game
      */
-    virtual short populateConsole() = 0;
+    virtual CardTableHelper::GAME_BOOL populateConsole() = 0;
 
 protected:
 
@@ -126,12 +127,12 @@ protected:
      */
     Card* dealsNewCard();
 
-     /**
+    /**
      * This function deallocates the memories of all elements in cards and clears the cards
      * @param cards : a vector of Card Structure pointers
      */
     void deleteCards(vector<Card*>& cards);
-        
+
     /**
      * This function uses the id to check if a card has been dealt
      * @param id : the Card Table index
@@ -146,9 +147,9 @@ protected:
 
     /**
      * This function checks if the current hand win or lose
-     * @return 1/0/-1:  win/lose/drawn
+     * @return -1/0/1:  /drawn/lose/win/
      */
-    virtual short isPlayerWin() = 0;
+    virtual CardTableHelper::GAME_BOOL isPlayerWin() = 0;
 
     /**
      *  This function reset all the current cards for a new game

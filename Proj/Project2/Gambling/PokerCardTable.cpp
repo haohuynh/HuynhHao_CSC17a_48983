@@ -19,7 +19,7 @@ PokerCardTable::~PokerCardTable() {
 /**
  * Reference to the declaration
  */
-short PokerCardTable::populateConsole() {
+CardTableHelper::GAME_BOOL PokerCardTable::populateConsole() {
 
     //Clean up the lists of cards 
     clean();
@@ -382,9 +382,9 @@ bool PokerCardTable::isPair() {
 
 /**
  * Reference to the declaration
- * @return  1/0/-1:  win/lose/drawn
+ * @return  -1/0/1:  /drawn/lose/win/
  */
-short PokerCardTable::isPlayerWin() {
+CardTableHelper::GAME_BOOL PokerCardTable::isPlayerWin() {
 
     //Sorting the current cards for checking a result
     sortCardsByRank();
@@ -419,11 +419,11 @@ short PokerCardTable::isPlayerWin() {
 
     } else {
         cout << "You lose !!!\n";
-        return 0;
+        return CardTableHelper::LOSE;
     }
 
     cout << "Congratulation! You are the winner !!!\n";
-    return 1;
+    return CardTableHelper::WIN;
 }
 
 /**

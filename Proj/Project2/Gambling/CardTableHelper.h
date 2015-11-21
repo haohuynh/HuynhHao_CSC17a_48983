@@ -26,6 +26,15 @@ private:
 public:
 
     /**
+     * The bool type for this program
+     */
+    static enum GAME_BOOL {
+        DRAWN = -1, LOSE = 0, WIN = 1
+    } GameBool;
+    
+public:
+
+    /**
      * Clear the screen after a certain event. 
      */
     static void clearMonitor();

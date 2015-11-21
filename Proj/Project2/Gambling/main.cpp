@@ -68,6 +68,9 @@ int main(int argc, char** argv) {
     //A Poker game controller
     AbstractCardTable* pokCTab = new PokerCardTable();
 
+    //A game result
+    CardTableHelper::GAME_BOOL result;
+
     while (true) {
 
         cout << "Your current bank roll is: " << crBkRoll << endl;
@@ -80,11 +83,12 @@ int main(int argc, char** argv) {
                 case START_GAME:
                 {
                     setUpGameScreen(crBkRoll, crrBet);
+                    result = pokCTab->populateConsole();
 
-                    if (pokCTab->populateConsole() == 1) { //The player win a game
+                    if (result == CardTableHelper::WIN) { //The player win a game
                         crBkRoll += crrBet;
 
-                    } else if (pokCTab->populateConsole() == 0) {//The player lose a game
+                    } else if (result == CardTableHelper::LOSE) {//The player lose a game
                         crBkRoll -= crrBet;
                     }
 

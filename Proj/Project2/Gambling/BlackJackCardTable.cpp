@@ -24,8 +24,27 @@ BlackJackCardTable::~BlackJackCardTable() {
 /**
  * Reference to the declaration
  */
-short BlackJackCardTable::populateConsole() {
+CardTableHelper::GAME_BOOL BlackJackCardTable::populateConsole() {
 
+    //Clean up the lists of cards 
+    clean();
+
+    //Dealing first four cards for the player and the dealer, alternatively
+    dealsCards();
+
+    //Show the dealer 's second card on console
+    displayDealerCards();
+
+    //Show the player's first two cards on console
+    displayPlayerCards();
+
+    //Interact with the player for the hit-or-stay process
+    processPlayerTurn();
+
+    //Try to make deal win the game
+    processDealerTurn();
+
+    return isPlayerWin();
 }
 
 /**
@@ -71,13 +90,13 @@ void BlackJackCardTable::dealsCards() {
 
 /**
  * Reference to the declaration
- * @return  1/0/-1:  win/lose/drawn
+ * @return  -1/0/1:  /drawn/lose/win/
  */
-short BlackJackCardTable::isPlayerWin() {
+CardTableHelper::GAME_BOOL BlackJackCardTable::isPlayerWin() {
 
     //Getting the dealer 's and the player's BJ score
-    int plyScre = calculateBJScore(crCards);
-    int dlrScre = calculateBJScore(crDCrds);
+    int plyScre = calculateScore(crCards);
+    int dlrScre = calculateScore(crDCrds);
 
     if (plyScre > BJ_UPPER_WINNER_LIMIT) {
         plyScre = BJ_BUST;
@@ -87,20 +106,19 @@ short BlackJackCardTable::isPlayerWin() {
         dlrScre = BJ_BUST;
     }
 
-
     if (plyScre > dlrScre) {
 
         cout << "You are the winner!!";
-        return 1;
+        return CardTableHelper::WIN;
 
     } else if (plyScre < dlrScre) {
 
         cout << "You lose!!!";
-        return 0;
+        return CardTableHelper::LOSE;
 
     } else {
         cout << "Drawn game!";
-        return -1;
+        return CardTableHelper::DRAWN;
     }
 
 }
@@ -123,7 +141,7 @@ void BlackJackCardTable::clean() {
  * @param cards
  * @return 
  */
-int BlackJackCardTable::calculateBJScore(vector<Card*> cards) {
+int BlackJackCardTable::calculateScore(vector<Card*> cards) {
 
     int size = cards.size();
 
@@ -167,4 +185,100 @@ int BlackJackCardTable::calculateBJScore(vector<Card*> cards) {
     }
 
     return result;
+}
+
+/**
+ * Reference to the function declaration 
+ * @param isPD : is the player done.
+ */
+void BlackJackCardTable::displayDealerCards(bool isPD) {
+
+    cout << "Dealer has:\n";
+
+    if (!isPD) {
+
+        //Display only the second card being occupied the dealer
+        cout << "Card 1: Secret!!!\n";
+        cout << "Card 2: " << CARD_SUIT_LABELS[crDCrds[1]->suit] << "-";
+        cout << CARD_RANK_LABELS[crDCrds[1]->rank] << " " << endl;
+        return;
+
+    }
+
+    int size = crDCrds.size();
+    //After the player finished his or her turn, show all dealer 's cards
+    for (int index = 0; index < size; index++) {
+        cout << "Card " << index + 1 << ": " <
+                cout << CARD_SUIT_LABELS[crDCrds[index]->suit] << "-";
+        cout << CARD_RANK_LABELS[crDCrds[index]->rank] << " " << endl;
+
+    }
+}
+
+/**
+ * Reference to the function declaration 
+ */
+void BlackJackCardTable::processPlayerTurn() {
+
+    string usrReq; //user request
+    bool isHOS; //is hit over stay
+
+    do {
+
+        isHOS = false;
+
+        cout << "Would you like to hit or stay (h/s)? ";
+        cin >> usrReq;
+
+        if ((tolower(usrReq[0]) == BJ_PLAYER_HIT)) {
+
+            crCards.push_back(dealsNewCard());
+
+            CardTableHelper::clearMonitor();
+
+            displayDealerCards();
+
+            displayPlayerCards();
+
+            isHOS = true;
+        }
+
+
+    } while (isHOS && (crCards.size() < BJ_PLAYER_CARD_LIMIT));
+}
+
+/**
+ *  Reference to the function declaration 
+ */
+void BlackJackCardTable::processDealerTurn() {
+
+    isSAce = false;
+
+    // Get the current dealer 's score
+    int dlrScre = calculateScore(crDCrds);
+
+    //Dealer must hit on at least a soft 17
+    while (dlrScre < BJ_LOWER_WINNER_LIMIT) {
+
+        crDCrds.push_back(dealsNewCard());
+        dlrScre = calculateScore(crDCrds);
+
+    }
+
+    //If the score of dealer is soft 17,
+    //the dealer must then continue to hit until it has a hard 17 or higher
+    if ((dlrScre == BJ_LOWER_WINNER_LIMIT) && (isSAce)) {
+
+        crDCrds.push_back(dealsNewCard());
+        dlrScre = calculateScore(crDCrds);
+
+    }
+    while (dlrScre < BJ_LOWER_WINNER_LIMIT) {
+
+        crDCrds.push_back(dealsNewCard());
+        dlrScre = calculateScore(crDCrds);
+
+    }
+
+    displayDealerCards();
 }

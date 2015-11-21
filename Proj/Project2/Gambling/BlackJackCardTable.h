@@ -83,7 +83,7 @@ public:
     /**
      * This function interacts with players to drive them through a game
      */
-    virtual short populateConsole();
+    virtual CardTableHelper::GAME_BOOL populateConsole();
 
 private:
 
@@ -98,25 +98,45 @@ private:
      * This function deals first four BlackJack cards for the player and the dealer, alternatively 
      */
     virtual void dealsCards();
-    
+
     /**
      * This function checks if the current hand win or lose
-     * @return  1/0/-1:  win/lose/drawn
+     * @return  -1/0/1:  /drawn/lose/win/
      */
-    virtual short isPlayerWin();
-    
+    virtual CardTableHelper::GAME_BOOL isPlayerWin();
+
     /**
      *  This function reset all the current cards for a new game
      */
     virtual void clean();
-    
+
     /**
      * This function calculates the total BlackJack score of the current hand or the dealer
      * @param cards
      * @return BJ score
      */
-    int calculateBJScore(vector<Card*> cards);
-    
+    int calculateScore(vector<Card*> cards);
+
+    /**
+     * This function sends all current dealer cards to console 
+     * @param isPF : is the player done his or her turn.
+     */
+    void displayDealerCards(bool isPD = false);
+
+
+    /**
+     * Process player's request for hitting or staying.
+     * Calculate user's BJ score after the player's turn. 
+     */
+    void processPlayerTurn();
+
+    /**
+     * Try getting the BJ score of dealer between hard 17 and 21.
+     * Calculate the actual BJ score. 
+     */
+    void processDealerTurn();
+
+
 };
 
 #endif	/* BLACKJACKCARDTABLE_H */
