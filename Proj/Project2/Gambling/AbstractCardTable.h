@@ -84,6 +84,10 @@ protected:
      */
     vector<Card*> crCards;
 
+    /*
+     * Vector contains all the current dealer cards
+     */
+    vector<Card*> crDCrds;
 
 public:
 
@@ -108,17 +112,11 @@ protected:
     Card* populateCardBy(int id);
 
     /**
-     * This function tries to dealt a new card to the current hand without
-     * duplicating any existed one 
-     * @param id : the Card Table index
-     * @return true/false : Insertion success or not
+     *  This function sends all current cards to the console 
+     * @param cards
+     * @param subject : who has the cards
      */
-    bool isCardInsertedBy(int id);
-
-    /**
-     *  This function sends all current hand cards to the console 
-     */
-    void displayPlayerCards();
+    void displayCards(vector<Card*> cards, string subject = "Player");
 
     /**
      * This function generates a new card for the replacing process.
@@ -138,12 +136,13 @@ protected:
      * @param id : the Card Table index
      * @return true/false : A card is existed or not
      */
-    virtual bool isCardExistedBy(int id) = 0;
+    bool isCardExistedBy(int id);
 
     /**
      * This function deals first five poker cards for the player
+     * @param nOfCds : the number of cards need dealing
      */
-    virtual void dealsCards() = 0;
+    void dealsCards(int nOfCds);
 
     /**
      * This function checks if the current hand win or lose

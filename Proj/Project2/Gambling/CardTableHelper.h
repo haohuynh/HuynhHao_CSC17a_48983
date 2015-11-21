@@ -48,6 +48,11 @@ public:
     static void validateValueOf(int& number, int lowerLimit, int upperLimit);
 
     /**
+     * Clean up the cin buffer
+     */
+    static void cleanCin();
+    
+    /**
      * This function saves the current bank roll to a file 
      * @param crBkRoll : the current bank roll 
      * @param fName : a file name

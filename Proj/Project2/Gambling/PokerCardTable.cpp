@@ -25,49 +25,22 @@ CardTableHelper::GAME_BOOL PokerCardTable::populateConsole() {
     clean();
 
     //Dealing first five cards
-    dealsCards();
+    dealsCards(FIVE_POKER_CARDS);
 
     //Show the first five cards on console
-    displayPlayerCards();
+    displayCards(crCards);
 
     //Interact with the player to change the existing cards if possible
     replaceCards();
 
     // Display new cards after the replacing process
-    displayPlayerCards();
+    displayCards(crCards);
+
+    // Display dealer 's cards
+    displayCards(crDCrds, "Dealer");
 
     //Check if the player win or not
     return isPlayerWin();
-
-}
-
-/**
- * Reference to the declaration
- * @param index
- * @return 
- */
-bool PokerCardTable::isCardExistedBy(int id) {
-
-    int size = crCards.size();
-
-    for (int i = 0; i < size; i++) {
-
-        if (id == crCards[i]->id) {
-            return true;
-        }
-    }
-
-    return false;
-}
-
-/**
- * Reference to the declaration
- */
-void PokerCardTable::dealsCards() {
-
-    for (int i = 0; i < FIVE_POKER_CARDS; i++) {
-        while (!isCardInsertedBy(rand() % CARDS_TOTAL));
-    }
 
 }
 
@@ -165,32 +138,34 @@ void PokerCardTable::replaceCards() {
 /**
  * Reference to the declaration
  */
-void PokerCardTable::sortCardsByRank() {
+void PokerCardTable::sortCardsByRank(const vector<Card*>& cards) {
 
     vector<Card*>::iterator cardIt;
+    crSRnks.clear();
 
     for (int i = 0; i < FIVE_POKER_CARDS; i++) {
 
         for (cardIt = crSRnks.begin(); (cardIt != crSRnks.end())
-                && ((*cardIt)->rank < crCards[i]->rank); cardIt++);
+                && ((*cardIt)->rank < cards[i]->rank); cardIt++);
 
-        crSRnks.insert(cardIt, crCards[i]);
+        crSRnks.insert(cardIt, cards[i]);
     }
 }
 
 /**
  * Reference to the declaration
  */
-void PokerCardTable::sortCardsBySuit() {
+void PokerCardTable::sortCardsBySuit(const vector<Card*>& cards) {
 
     vector<Card*>::iterator cardIt;
+    crSSuits.clear();
 
     for (int i = 0; i < FIVE_POKER_CARDS; i++) {
 
         for (cardIt = crSSuits.begin(); (cardIt != crSSuits.end())
-                && ((*cardIt)->suit < crCards[i]->suit); cardIt++);
+                && ((*cardIt)->suit < cards[i]->suit); cardIt++);
 
-        crSSuits.insert(cardIt, crCards[i]);
+        crSSuits.insert(cardIt, cards[i]);
     }
 }
 
@@ -387,8 +362,8 @@ bool PokerCardTable::isPair() {
 CardTableHelper::GAME_BOOL PokerCardTable::isPlayerWin() {
 
     //Sorting the current cards for checking a result
-    sortCardsByRank();
-    sortCardsBySuit();
+    sortCardsByRank(crCards);
+    sortCardsBySuit(crCards);
 
     if (isRoyalFlush()) {
         cout << "A Royal Flush!!!\n";
@@ -445,8 +420,9 @@ void PokerCardTable::deleteCardsBy(vector<Card*>& cards, const set<int>& poss) {
  */
 void PokerCardTable::clean() {
 
-    //Clean up crCards for a new game
+    //Clean up crCards & cdDCards for a new game
     deleteCards(crCards);
+    deleteCards(crDCrds);
 
     //Both crSRnks and crSSuits reference to the same memories in crCards
     crSRnks.clear();

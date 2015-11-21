@@ -41,31 +41,14 @@ AbstractCardTable::Card* AbstractCardTable::populateCardBy(int id) {
 
 /**
  * Reference to the declaration
- * @param index
- * @return 
  */
-bool AbstractCardTable::isCardInsertedBy(int id) {
+void AbstractCardTable::displayCards(vector<Card*> cards, string subject) {
 
-    //Do not insert any existing card 
-    if (isCardExistedBy(id)) {
-        return false;
-    }
+    cout << "The following cards are belong to " << subject << ":\n";
 
-    //Insert a completely new card
-    crCards.push_back(populateCardBy(id));
-    return true;
-}
-
-/**
- * Reference to the declaration
- */
-void AbstractCardTable::displayPlayerCards() {
-
-    cout << "The following cards are yours :\n";
-
-    int size = crCards.size();
+    int size = cards.size();
     //Applying pointer of array structure technique
-    Card** cPointer = &crCards[0];
+    Card** cPointer = &cards[0];
 
     for (int i = 0; i < size; i++) {
         cout << "Card " << i + 1 << ": " << CARD_SUIT_LABELS[(*(cPointer + i))->suit] << "-"
@@ -102,4 +85,46 @@ void AbstractCardTable::deleteCards(vector<Card*>& cards) {
     }
 
     cards.clear();
+}
+
+/**
+ * Reference to the declaration
+ * @param index
+ * @return 
+ */
+bool AbstractCardTable::isCardExistedBy(int id) {
+
+    int index;
+    int size = crCards.size();
+    //Check all current player's cards
+    for (index = 0; index < size; index++) {
+
+        if (id == crCards[index]->id) {
+            return true;
+        }
+    }
+
+    size = crDCrds.size();
+    //Check all current dealer 's cards
+    for (index = 0; index < size; index++) {
+
+        if (id == crDCrds[index]->id) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+/**
+ * Reference to the declaration
+ * @param nOfCds
+ */
+void AbstractCardTable::dealsCards(int nOfCds) {
+
+    for (int i = 0; i < nOfCds; i++) {
+        crDCrds.push_back(dealsNewCard());
+        crCards.push_back(dealsNewCard());
+    }
+
 }

@@ -146,6 +146,7 @@ int main(int argc, char** argv) {
                     && ((gOption == POKER_GAME) || (gOption == BLACK_JACK))) {
                 cout << "Your current bank roll is: " << crBkRoll << endl;
                 cout << "\nWould you like to continue (y/n): ";
+                CardTableHelper::cleanCin();
                 cin >> pReq;
 
             } else { // Out of money
@@ -159,6 +160,7 @@ int main(int argc, char** argv) {
         //The player is out of money
         if (crBkRoll <= MIN_BANK_ROLL) {
             cout << "\nOut of money!! You have to start a new game (y/n): ";
+            CardTableHelper::cleanCin();
             cin >> pReq;
 
             if (tolower(pReq[0]) != 'y') {

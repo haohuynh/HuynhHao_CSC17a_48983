@@ -21,10 +21,17 @@ void CardTableHelper::clearMonitor() {
  */
 void CardTableHelper::validateValueOf(int& number, int lowerLimit, int upperLimit) {
     while (!(cin >> number) || (number < lowerLimit) || (number > upperLimit)) {
-        cin.clear();
-        cin.ignore(MAX_MONITOR_LINES, '\n');
+        cleanCin();
         cout << "Invalid Input! Please reenter your number: ";
     }
+}
+
+/**
+ *  Reference to the declaration 
+ */
+void CardTableHelper::cleanCin() {
+    cin.clear();
+    cin.ignore(MAX_MONITOR_LINES, '\n');
 }
 
 /**

@@ -30,13 +30,13 @@ CardTableHelper::GAME_BOOL BlackJackCardTable::populateConsole() {
     clean();
 
     //Dealing first four cards for the player and the dealer, alternatively
-    dealsCards();
+    dealsCards(BJ_INIT_N_CARDS);
 
     //Show the dealer 's second card on console
     displayDealerCards();
 
     //Show the player's first two cards on console
-    displayPlayerCards();
+    displayCards(crCards);
 
     //Interact with the player for the hit-or-stay process
     processPlayerTurn();
@@ -45,47 +45,6 @@ CardTableHelper::GAME_BOOL BlackJackCardTable::populateConsole() {
     processDealerTurn();
 
     return isPlayerWin();
-}
-
-/**
- * Reference to the declaration
- * @param index
- * @return 
- */
-bool BlackJackCardTable::isCardExistedBy(int id) {
-
-    int index;
-    int size = crCards.size();
-    //Check all current player's cards
-    for (index = 0; index < size; index++) {
-
-        if (id == crCards[index]->id) {
-            return true;
-        }
-    }
-
-    size = crDCrds.size();
-    //Check all current dealer 's cards
-    for (index = 0; index < size; index++) {
-
-        if (id == crDCrds[index]->id) {
-            return true;
-        }
-    }
-
-    return false;
-}
-
-/**
- * Reference to the declaration
- */
-void BlackJackCardTable::dealsCards() {
-
-    for (int i = 0; i < INIT_BJ_CARDS; i++) {
-        crDCrds.push_back(dealsNewCard());
-        crCards.push_back(dealsNewCard());
-    }
-
 }
 
 /**
@@ -193,9 +152,9 @@ int BlackJackCardTable::calculateScore(vector<Card*> cards) {
  */
 void BlackJackCardTable::displayDealerCards(bool isPD) {
 
-    cout << "Dealer has:\n";
-
     if (!isPD) {
+
+        cout << "Dealer has:\n";
 
         //Display only the second card being occupied the dealer
         cout << "Card 1: Secret!!!\n";
@@ -205,14 +164,8 @@ void BlackJackCardTable::displayDealerCards(bool isPD) {
 
     }
 
-    int size = crDCrds.size();
     //After the player finished his or her turn, show all dealer 's cards
-    for (int index = 0; index < size; index++) {
-        cout << "Card " << index + 1 << ": " <
-                cout << CARD_SUIT_LABELS[crDCrds[index]->suit] << "-";
-        cout << CARD_RANK_LABELS[crDCrds[index]->rank] << " " << endl;
-
-    }
+    displayCards(crDCrds, "Dealer");
 }
 
 /**
@@ -238,7 +191,7 @@ void BlackJackCardTable::processPlayerTurn() {
 
             displayDealerCards();
 
-            displayPlayerCards();
+            displayCards(crCards);
 
             isHOS = true;
         }

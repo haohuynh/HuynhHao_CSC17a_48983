@@ -47,7 +47,7 @@ private:
      * The fifth poker card index
      */
     static const int INDEX_4 = 4;
-    
+
     /*
      * Vector contains all the user's current cards sorted by rank
      */
@@ -76,19 +76,7 @@ public:
     virtual CardTableHelper::GAME_BOOL populateConsole();
 
 private:
-    
-    /**
-     * This function uses the id to check if a card has been dealt
-     * @param id : the Card Table index
-     * @return true/false : A card is existed or not
-     */
-    virtual bool isCardExistedBy(int id);
 
-    /**
-     * This function deals first five poker cards for the player
-     */
-    virtual void dealsCards();
-    
     /**
      * This function generates a new one that has not been dealt before
      * for the replacement process
@@ -105,12 +93,12 @@ private:
     /**
      * This functions creates a list of current hand cards sorted by rank.
      */
-    void sortCardsByRank();
+    void sortCardsByRank(const vector<Card*>& cards);
 
     /**
      * This functions creates a list of current hand cards sorted by suit.
      */
-    void sortCardsBySuit();
+    void sortCardsBySuit(const vector<Card*>& cards);
 
     /**
      * This functions check if there is an ACE, and all five poker cards are flush and straight
@@ -198,7 +186,7 @@ private:
      * @param poss : a set of positions in cards
      */
     void deleteCardsBy(vector<Card*>& cards, const set<int>& poss);
-   
+
     /**
      *  This function reset all the current cards for a new game
      */
