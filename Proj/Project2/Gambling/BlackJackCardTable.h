@@ -26,7 +26,7 @@ private:
     /*
      * BlackJack player request to hit
      */
-    static const char BJ_PLAYER_HIT = 'h';
+    static const int BJ_PLAYER_HIT = 1;
 
     /*
      * The highest BlackJack winning score

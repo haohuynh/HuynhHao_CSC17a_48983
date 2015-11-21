@@ -220,17 +220,17 @@ void BlackJackCardTable::displayDealerCards(bool isPD) {
  */
 void BlackJackCardTable::processPlayerTurn() {
 
-    string usrReq; //user request
+    int usrReq; //user request
     bool isHOS; //is hit over stay
 
     do {
 
         isHOS = false;
 
-        cout << "Would you like to hit or stay (h/s)? ";
-        cin >> usrReq;
+        cout << "Would you like to hit(1) or stay(2) ? ";
+        CardTableHelper::validateValueOf(usrReq, BJ_PLAYER_HIT, BJ_PLAYER_HIT + 1);
 
-        if ((tolower(usrReq[0]) == BJ_PLAYER_HIT)) {
+        if (usrReq == BJ_PLAYER_HIT) {
 
             crCards.push_back(dealsNewCard());
 
@@ -280,5 +280,6 @@ void BlackJackCardTable::processDealerTurn() {
 
     }
 
-    displayDealerCards();
+    //Show all cards belonging to the dealer
+    displayDealerCards(true);
 }

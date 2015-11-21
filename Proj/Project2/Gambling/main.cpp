@@ -6,18 +6,20 @@
  */
 
 #include "PokerCardTable.h"
+#include "BlackJackCardTable.h"
 using namespace std;
 
 /**
  * Prepare screen for any new game
  * @param crBkRoll : The current bank roll
  * @param crrBet : The current bet
+ * @param crGame : The current game (Poker/BlackJack)
  */
-void setUpGameScreen(int crBkRoll, int& crrBet) {
+void setUpGameScreen(int crBkRoll, int& crrBet, string crGame = "five poker game.") {
 
     CardTableHelper::clearMonitor();
 
-    cout << "You are playing five card Poker game." << endl;
+    cout << "You are playing " << crGame << endl;
     cout << "Your current bank roll is: " << crBkRoll << endl;
     cout << "How much you want to bet for the game: ";
     CardTableHelper::validateValueOf(crrBet, 1, crBkRoll);
@@ -31,19 +33,20 @@ void setUpGameScreen(int crBkRoll, int& crrBet) {
  */
 int main(int argc, char** argv) {
 
-    //Poker Game Options
+    //Gambling Menu Options
 
-    enum POKERMENU {
-        START_GAME = 1, SAVE = 2, LOAD = 3, RESTART = 4, EXIT = 5
+    enum GAMBLING_MENU {
+        POKER_GAME = 1, BLACK_JACK = 2, SAVE = 3, LOAD = 4, RESTART = 5, EXIT = 6
     };
 
     //The content of menu options
-    const char* MENU_CONTENT = "Poker Game Menu:\n"
-            "1. Start Game.\n"
-            "2. Save Game.\n"
-            "3. Load Game.\n"
-            "4. Restart.\n"
-            "5. Exit.\n"
+    const char* MENU_CONTENT = "Gambling Menu Options:\n"
+            "1. Five Poker Cards.\n"
+            "2. BlackJack.\n"
+            "3. Save Game.\n"
+            "4. Load Game.\n"
+            "5. Restart.\n"
+            "6. Exit.\n"
             "Please enter your option: ";
 
 
@@ -68,6 +71,9 @@ int main(int argc, char** argv) {
     //A Poker game controller
     AbstractCardTable* pokCTab = new PokerCardTable();
 
+    //A BlackJack game controller
+    AbstractCardTable* bJCTab = new BlackJackCardTable();
+
     //A game result
     CardTableHelper::GAME_BOOL result;
 
@@ -75,12 +81,12 @@ int main(int argc, char** argv) {
 
         cout << "Your current bank roll is: " << crBkRoll << endl;
         cout << MENU_CONTENT;
-        CardTableHelper::validateValueOf(gOption, START_GAME, EXIT);
+        CardTableHelper::validateValueOf(gOption, POKER_GAME, EXIT);
 
         do {
             switch (gOption) {
 
-                case START_GAME:
+                case POKER_GAME:
                 {
                     setUpGameScreen(crBkRoll, crrBet);
                     result = pokCTab->populateConsole();
@@ -93,6 +99,21 @@ int main(int argc, char** argv) {
                     }
 
                     break;
+                }
+                case BLACK_JACK:
+                {
+                    setUpGameScreen(crBkRoll, crrBet, "BlackJack.");
+                    result = bJCTab->populateConsole();
+
+                    if (result == CardTableHelper::WIN) { //The player win a game
+                        crBkRoll += crrBet;
+
+                    } else if (result == CardTableHelper::LOSE) {//The player lose a game
+                        crBkRoll -= crrBet;
+                    }
+
+                    break;
+
                 }
                 case SAVE:
                 {
@@ -121,7 +142,8 @@ int main(int argc, char** argv) {
             }
 
             // The player still have money and want to continue on the game
-            if ((crBkRoll > MIN_BANK_ROLL) && (gOption == START_GAME)) {
+            if ((crBkRoll > MIN_BANK_ROLL)
+                    && ((gOption == POKER_GAME) || (gOption == BLACK_JACK))) {
                 cout << "Your current bank roll is: " << crBkRoll << endl;
                 cout << "\nWould you like to continue (y/n): ";
                 cin >> pReq;
