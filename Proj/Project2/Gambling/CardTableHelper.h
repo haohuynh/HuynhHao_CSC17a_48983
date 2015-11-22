@@ -10,6 +10,8 @@
 
 #include <string>
 #include <fstream>
+#include <iostream>
+using namespace std;
 
 class CardTableHelper {
 private:
@@ -31,7 +33,7 @@ public:
     static enum GAME_BOOL {
         DRAWN = -1, LOSE = 0, WIN = 1
     } GameBool;
-    
+
 public:
 
     /**
@@ -51,20 +53,49 @@ public:
      * Clean up the cin buffer
      */
     static void cleanCin();
-    
+
     /**
      * This function saves the current bank roll to a file 
      * @param crBkRoll : the current bank roll 
      * @param fName : a file name
      */
-    static void save(int crBkRoll);
+    template <typename T>
+    static void save(T crBkRoll) {
+
+        fstream* fs = new fstream(DEFAULT_FILE_NAME.c_str(), ios::out | ios::binary);
+
+        fs->exceptions(fstream::failbit | fstream::badbit);
+
+        try {
+            fs->write(reinterpret_cast<char*> (&crBkRoll), sizeof (crBkRoll));
+        } catch (fstream::failure e) {
+            cerr << "File IO exception!!! \n";
+        }
+
+        fs->close();
+    }
 
     /**
      * This function loads the current bank roll from a file
      * @param crBkRoll : the current bank roll 
      * @param fName : a file name
      */
-    static void load(int& crBkRoll);
+    template <typename T>
+    static void load(T& crBkRoll) {
+
+        fstream* fs = new fstream(DEFAULT_FILE_NAME.c_str(), ios::in | ios::binary);
+
+        fs->exceptions(fstream::failbit | fstream::badbit);
+
+        try {
+            fs->read(reinterpret_cast<char*> (&crBkRoll), sizeof (crBkRoll));
+        } catch (fstream::failure e) {
+            cerr << "File IO exception!!! \n";
+        }
+
+        fs->close();
+
+    }
 };
 
 
