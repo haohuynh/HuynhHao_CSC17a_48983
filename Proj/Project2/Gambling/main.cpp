@@ -33,31 +33,8 @@ void setUpGameScreen(int crBkRoll, int& crrBet, string crGame = "five poker game
  */
 int main(int argc, char** argv) {
 
-    //Gambling Menu Options
-
-    enum GAMBLING_MENU {
-        POKER_GAME = 1, BLACK_JACK = 2, SAVE = 3, LOAD = 4, RESTART = 5, EXIT = 6
-    };
-
-    //The content of menu options
-    const char* MENU_CONTENT = "Gambling Menu Options:\n"
-            "1. Poker (v2).\n"
-            "2. BlackJack.\n"
-            "3. Save Game.\n"
-            "4. Load Game.\n"
-            "5. Restart.\n"
-            "6. Exit.\n"
-            "Please enter your option: ";
-
-
-    //Initiated money a player can have
-    const int MAX_BANK_ROLL = 100;
-
-    //Out of money
-    const int MIN_BANK_ROLL = 0;
-
     //The current bank roll
-    int crBkRoll = MAX_BANK_ROLL;
+    int crBkRoll = CardTableHelper::MAX_BANK_ROLL;
 
     //The current money that a player wants to bet
     int crrBet;
@@ -80,13 +57,13 @@ int main(int argc, char** argv) {
     while (true) {
 
         cout << "Your current bank roll is: " << crBkRoll << endl;
-        cout << MENU_CONTENT;
-        CardTableHelper::validateValueOf(gOption, POKER_GAME, EXIT);
+        cout << CardTableHelper::getInstance(); //Operator << overriding
+        CardTableHelper::validateValueOf(gOption, CardTableHelper::POKER_GAME, CardTableHelper::EXIT);
 
         do {
             switch (gOption) {
 
-                case POKER_GAME:
+                case CardTableHelper::POKER_GAME:
                 {
                     setUpGameScreen(crBkRoll, crrBet);
                     result = pokCTab->populateConsole();
@@ -100,7 +77,7 @@ int main(int argc, char** argv) {
 
                     break;
                 }
-                case BLACK_JACK:
+                case CardTableHelper::BLACK_JACK:
                 {
                     setUpGameScreen(crBkRoll, crrBet, "BlackJack.");
                     result = bJCTab->populateConsole();
@@ -115,22 +92,22 @@ int main(int argc, char** argv) {
                     break;
 
                 }
-                case SAVE:
+                case CardTableHelper::SAVE:
                 {
                     CardTableHelper::save(crBkRoll);
                     break;
                 }
-                case LOAD:
+                case CardTableHelper::LOAD:
                 {
                     CardTableHelper::load(crBkRoll);
                     break;
                 }
-                case RESTART:
+                case CardTableHelper::RESTART:
                 {
-                    crBkRoll = MAX_BANK_ROLL;
+                    crBkRoll = CardTableHelper::MAX_BANK_ROLL;
                     break;
                 }
-                case EXIT:
+                case CardTableHelper::EXIT:
                 {
                     return 0;
                 }
@@ -142,8 +119,8 @@ int main(int argc, char** argv) {
             }
 
             // The player still have money and want to continue on the game
-            if ((crBkRoll > MIN_BANK_ROLL)
-                    && ((gOption == POKER_GAME) || (gOption == BLACK_JACK))) {
+            if ((crBkRoll > CardTableHelper::MIN_BANK_ROLL)
+                    && ((gOption == CardTableHelper::POKER_GAME) || (gOption == CardTableHelper::BLACK_JACK))) {
                 cout << "Your current bank roll is: " << crBkRoll << endl;
                 cout << "\nWould you like to continue (y/n): ";
                 CardTableHelper::cleanCin();
@@ -158,7 +135,7 @@ int main(int argc, char** argv) {
         } while (tolower(pReq[0]) == 'y');
 
         //The player is out of money
-        if (crBkRoll <= MIN_BANK_ROLL) {
+        if (crBkRoll <= CardTableHelper::MIN_BANK_ROLL) {
             cout << "\nOut of money!! You have to start a new game (y/n): ";
             CardTableHelper::cleanCin();
             cin >> pReq;
@@ -167,16 +144,16 @@ int main(int argc, char** argv) {
                 return 0;
             }
 
-            crBkRoll = MAX_BANK_ROLL;
+            crBkRoll = CardTableHelper::MAX_BANK_ROLL;
         }
 
         CardTableHelper::clearMonitor();
 
         //Notifying players about the saving and loading process
-        if (gOption == SAVE) {
+        if (gOption == CardTableHelper::SAVE) {
             cout << "The current bank roll " << crBkRoll << " saved\n";
 
-        } else if (gOption == LOAD) {
+        } else if (gOption == CardTableHelper::LOAD) {
             cout << "The current bank roll " << crBkRoll << " loaded\n";
         }
 

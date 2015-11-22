@@ -13,6 +13,14 @@
 #include <iostream>
 using namespace std;
 
+class CardTableHelper; // Forward Declaration
+
+// Function Prototypes for Overloaded Stream Operators
+ostream &operator <<(ostream &, const CardTableHelper &);
+
+/*
+ * Class Helper
+ */
 class CardTableHelper {
 private:
     /*
@@ -20,12 +28,31 @@ private:
      */
     static const int MAX_MONITOR_LINES = 200;
 
+    //The content of menu options
+    static const char* MENU_CONTENT;
+
     /**
      * The default file that stores the current bank roll
      */
-    static const std::string DEFAULT_FILE_NAME;
+    static const string DEFAULT_FILE_NAME;
 
+    /*
+     * Singleton instance
+     */
+    static const CardTableHelper cTHelper;
+    
 public:
+    //Initiated money a player can have
+    static const int MAX_BANK_ROLL = 100;
+
+    //Out of money
+    static const int MIN_BANK_ROLL = 0;
+
+    //Gambling Menu Options
+
+    static enum GAMBLING_MENU {
+        POKER_GAME = 1, BLACK_JACK = 2, SAVE = 3, LOAD = 4, RESTART = 5, EXIT = 6
+    } GamblingMenu;
 
     /**
      * The bool type for this program
@@ -96,6 +123,13 @@ public:
         fs->close();
 
     }
+    
+    //Singleton pattern
+    static CardTableHelper getInstance();
+    
+    // Friend function
+    friend ostream &operator <<(ostream &, const CardTableHelper &);
+    
 };
 
 
