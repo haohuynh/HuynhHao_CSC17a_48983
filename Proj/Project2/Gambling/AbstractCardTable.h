@@ -19,12 +19,12 @@ using namespace std;
 /*              
  * This class is used for managing user's cards base on the below logical mapping table
  * 
- *              0   1   2   3   4   5   6   7   8   9   10   11    12
- * Suits/Ranks  Ace 2   3   4   5   6   7   8   9   10  Jack Queen King                         
- * 0 Hearts     0   1   2   3   4   5   6   7   8   9   10   11    12                      
- * 1 Diamonds   13  14  15  16  17  18  19  20  21  22  23   24    25                                                         
- * 2 Clubs      26  27  28  29  30  31  32  33  34  35  36   37    38                                         
- * 3 Spades     39  40  41  42  43  44  45  46  47  48  49   50    51                                     
+ *              0   1   2   3   4   5   6   7   8   9    10    11    12
+ * Suits/Ranks  2   3   4   5   6   7   8   9   10  Jack Queen King Ace                         
+ * 0 Hearts     0   1   2   3   4   5   6   7   8   9    10    11    12                      
+ * 1 Diamonds   13  14  15  16  17  18  19  20  21  22   23    24    25                                                         
+ * 2 Clubs      26  27  28  29  30  31  32  33  34  35   36    37    38                                         
+ * 3 Spades     39  40  41  42  43  44  45  46  47  48   49    50    51                                     
  */
 class AbstractCardTable {
 protected:
@@ -33,7 +33,7 @@ protected:
      * There are thirteen ranks per suit: from Ace to King.
      */
     enum CARD_RANKS {
-        ACE, TWO, THREE, FOUR, FIVE, SIX, SEVEN, EIGHT, NINE, TEN, JACK, QUEEN, KING
+        TWO, THREE, FOUR, FIVE, SIX, SEVEN, EIGHT, NINE, TEN, JACK, QUEEN, KING, ACE
     };
 
     /*

@@ -121,8 +121,8 @@ int BlackJackCardTable::calculateScore(vector<Card*> cards) {
 
             result += BJ_JACK_QUEEN_KING;
 
-        } else {
-            result += cards[index]->rank + 1;
+        } else {// The gap between a managed rank and a real rank is 2
+            result += cards[index]->rank + 2;
         }
     }
 
@@ -142,7 +142,7 @@ int BlackJackCardTable::calculateScore(vector<Card*> cards) {
 
         }
     }
-
+    
     return result;
 }
 

@@ -171,7 +171,7 @@ void PokerCardTable::sortCardsBySuit(const vector<Card*>& cards) {
  * @return true/false
  */
 bool PokerCardTable::isRoyalFlush() {
-    return ((crSRnks[INDEX_0]->rank == ACE) && isStraightFlush());
+    return ((crSRnks[INDEX_4]->rank == ACE) && isStraightFlush());
 }
 
 /**
@@ -196,16 +196,16 @@ bool PokerCardTable::isFlush() {
  */
 bool PokerCardTable::isStraight() {
 
-    if (crSRnks[INDEX_0]->rank == ACE) { //Case 1 {ACE, TEN, JACK, QUEEN, KING} 
-        //or {ACE, TWO, THREE, FOUR, FIVE}
+    if (crSRnks[INDEX_4]->rank == ACE) { //Case 1 {TEN, JACK, QUEEN, KING, ACE} 
+        //or {TWO, THREE, FOUR, FIVE, ACE}
 
-        if (crSRnks[INDEX_1]->rank == TEN && crSRnks[INDEX_2]->rank == JACK
-                && crSRnks[INDEX_3]->rank == QUEEN && crSRnks[INDEX_4]->rank == KING) {
+        if (crSRnks[INDEX_0]->rank == TEN && crSRnks[INDEX_1]->rank == JACK
+                && crSRnks[INDEX_2]->rank == QUEEN && crSRnks[INDEX_3]->rank == KING) {
             return true;
         }
 
-        if (crSRnks[INDEX_1]->rank == TWO && crSRnks[INDEX_2]->rank == THREE
-                && crSRnks[INDEX_3]->rank == FOUR && crSRnks[INDEX_4]->rank == FIVE) {
+        if (crSRnks[INDEX_0]->rank == TWO && crSRnks[INDEX_1]->rank == THREE
+                && crSRnks[INDEX_2]->rank == FOUR && crSRnks[INDEX_3]->rank == FIVE) {
             return true;
         }
 

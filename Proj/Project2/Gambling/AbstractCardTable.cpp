@@ -15,8 +15,8 @@ const string AbstractCardTable::CARD_SUIT_LABELS[SUIT_MAX] = {"Hearts", "Diamond
 /**
  * Reference to the declaration
  */
-const string AbstractCardTable::CARD_RANK_LABELS[RANKS_PER_SUIT] = {"Ace", "Two", "Three", "Four", "Five",
-    "Six", "Seven", "Eight", "Nine", "Ten", "Jack", "Queen", "King"};
+const string AbstractCardTable::CARD_RANK_LABELS[RANKS_PER_SUIT] = {"Two", "Three", "Four", "Five",
+    "Six", "Seven", "Eight", "Nine", "Ten", "Jack", "Queen", "King", "Ace"};
 
 /**
  * Reference to the method declaration
