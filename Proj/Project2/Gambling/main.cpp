@@ -41,7 +41,7 @@ int main(int argc, char** argv) {
 
     //The content of menu options
     const char* MENU_CONTENT = "Gambling Menu Options:\n"
-            "1. Five Poker Cards.\n"
+            "1. Poker (v2).\n"
             "2. BlackJack.\n"
             "3. Save Game.\n"
             "4. Load Game.\n"
