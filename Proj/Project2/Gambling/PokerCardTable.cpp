@@ -36,9 +36,6 @@ CardTableHelper::GAME_BOOL PokerCardTable::populateConsole() {
     // Display new cards after the replacing process
     displayCards(crCards);
 
-    // Display dealer 's cards
-    displayCards(crDCrds, "Dealer");
-
     //Check if the player win or not
     return isPlayerWin();
 
@@ -365,9 +362,21 @@ CardTableHelper::GAME_BOOL PokerCardTable::isPlayerWin() {
     int plyrScr = calPokerScore(crCards); //Calculate the final score of the player
     cout << "Poker score: " << plyrScr << endl;
 
-    cout << "\nThe dealer 's result:\n";
+
+    // Display dealer 's cards
+    cout << "\n\nThe dealer 's turn:\n";
+    displayCards(crDCrds, "Dealer");
+
     int dlerScr = calPokerScore(crDCrds); //Calculate the final score of the dealer
+
+    if (dlerScr == CardTableHelper::LOSE) {
+        //If dealer lose at the first time, then give it one more chance
+        replaceAllDealerCards();
+        dlerScr = calPokerScore(crDCrds); //Calculate the final score of the dealer again
+    }
+
     cout << "Poker score: " << dlerScr << "\n\n";
+
 
     if (plyrScr > dlerScr) {
         cout << "Congratulation! You are the winner !!!\n";
@@ -607,4 +616,32 @@ int PokerCardTable::calPokerScore(const vector<Card*>& cards) {
 
     return CardTableHelper::LOSE;
 
+}
+
+/**
+ * Reference to the declaration
+ */
+void PokerCardTable::replaceAllDealerCards() {
+
+    //New Poker card container
+    vector<Card*> newCrds;
+
+    //Add new five poker cards
+    for (int i = 0; i < FIVE_POKER_CARDS; i++) {
+        newCrds.push_back(dealsNewCard());
+        crDCrds.push_back(newCrds[i]);
+    }
+
+    //Deallocate the memories of the first five poker cards
+    for (int i = 0; i < FIVE_POKER_CARDS; i++) {
+        delete crDCrds[i];
+    }
+    crDCrds.clear();
+
+    //Dealer has new five poker cards
+    crDCrds = newCrds;
+
+    //Show the new cards on console
+    cout << "\n.......Replacing Dealer Cards.......\n";
+    displayCards(crDCrds, "Dealer");
 }

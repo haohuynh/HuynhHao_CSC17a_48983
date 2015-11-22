@@ -322,7 +322,12 @@ private:
      * @return The final Poker score 
      */
     int calPokerScore(const vector<Card*>& cards);
-    
+
+    /**
+     * This method creates one more chance for the dealer to win a game
+     */
+    void replaceAllDealerCards();
+
 };
 
 #endif	/* POKERCARDTABLE_H */
