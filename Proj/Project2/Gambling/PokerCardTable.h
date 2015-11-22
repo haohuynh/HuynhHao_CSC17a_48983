@@ -49,6 +49,56 @@ private:
     static const int INDEX_4 = 4;
 
     /*
+     * The base score of a royal flush
+     */
+    static const int ROYAL_FLUSH_SCORE = 10000000;
+
+    /*
+     * The base score of a straight flush
+     */
+    static const int STRAIGHT_FLUSH_SCORE = 9000000;
+
+    /*
+     * The base score of Four of a Kind
+     */
+    static const int FOUR_OF_A_KIND_SCORE = 8000000;
+
+    /*
+     * The base score of Full House
+     */
+    static const int FULL_HOUSE_SCORE = 7000000;
+
+    /*
+     * The base score of a Flush
+     */
+    static const int FLUSH_SCORE = 6000000;
+
+    /*
+     * The base score of a Straight
+     */
+    static const int STRAIGHT_SCORE = 5000000;
+
+    /*
+     * The base score of Three of a Kind
+     */
+    static const int THREE_OF_A_KIND_SCORE = 4000000;
+
+    /*
+     * The base score of Two Pairs
+     */
+    static const int TWO_PAIR_SCORE = 3000000;
+
+    /*
+     * The base score of a Pair
+     */
+    static const int A_PAIR_SCORE = 2000000;
+
+    /*
+     * The coefficient is used for calculating a player's score
+     */
+    static const int BASE_SCORE = 10;
+
+    /*
      * Vector contains all the user's current cards sorted by rank
      */
     vector<Card*> crSRnks;
@@ -192,6 +242,87 @@ private:
      */
     virtual void clean();
 
+    /**
+     * This function calculates the total score of cards in a hand by:
+     * 10^4*the-first-highest-rank + 10^3*the-second-highest-rank 
+     * + 10^2*the-third-highest-rank + 10^1-the-fourth-highest-rank + the-lowest-rank
+     * @param cards
+     * @return the total score of cards in a hand 
+     */
+    int getHandScore();
+
+    /**
+     * This function calculates the total Royal Flush score of cards in a hand
+     * @param cards
+     * @return 
+     */
+    int getRoyalFlushScore();
+
+    /**
+     * This function calculates the total Straight Flush score of cards in a hand
+     * @param cards
+     * @return 
+     */
+    int getStraightFlushScore();
+
+    /** 
+     * This function calculates the total Flush score of cards in a hand
+     * @param cards
+     * @return 
+     */
+    int getFlushScore();
+
+    /** 
+     * This function calculates the total Flush score of cards in a hand
+     * @param cards
+     * @return 
+     */
+    int getStraightScore();
+
+    /** 
+     * This function calculates the total Four Of A Kind score of cards in a hand
+     * @param cards
+     * @return 
+     */
+    int getFourOfAKindScore();
+
+    /** 
+     * This function calculates the total Full House score of cards in a hand
+     * @param cards
+     * @return 
+     */
+    int getFullHouseScore();
+
+    /** 
+     * This function calculates the total Three Of A Kind score of cards in a hand
+     * @param cards
+     * @return 
+     */
+    int getThreeOfAKindScore();
+
+    /** 
+     * This function calculates the total Two Pair score of cards in a hand by:
+     * TWO_PAIR_SCORE + 10^2*First-Hight-Two-Pair + 10*Second-Hight-Two-Pair +  Low-Card
+     * @param cards
+     * @return 
+     */
+    int getTwoPairScore();
+
+    /** 
+     * This function calculates the total Pair score of cards in a hand by:
+     * A_PAIR_SCORE + 10^3*A-Pair + 10^2*First-Hight-Card + 10*Second-Hight-Card + Low-Card
+     * @param cards
+     * @return 
+     */
+    int getAPairScore();
+
+    /**
+     * This function calculates the final Poker score of cards in a hand base on the wining conditions
+     * @param cards
+     * @return The final Poker score 
+     */
+    int calPokerScore(const vector<Card*>& cards);
+    
 };
 
 #endif	/* POKERCARDTABLE_H */

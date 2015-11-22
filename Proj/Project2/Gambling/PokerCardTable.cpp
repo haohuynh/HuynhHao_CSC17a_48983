@@ -361,44 +361,24 @@ bool PokerCardTable::isPair() {
  */
 CardTableHelper::GAME_BOOL PokerCardTable::isPlayerWin() {
 
-    //Sorting the current cards for checking a result
-    sortCardsByRank(crCards);
-    sortCardsBySuit(crCards);
+    cout << "\nThe player's result:\n";
+    int plyrScr = calPokerScore(crCards); //Calculate the final score of the player
+    cout << "Poker score: " << plyrScr << endl;
 
-    if (isRoyalFlush()) {
-        cout << "A Royal Flush!!!\n";
+    cout << "\nThe dealer 's result:\n";
+    int dlerScr = calPokerScore(crDCrds); //Calculate the final score of the dealer
+    cout << "Poker score: " << dlerScr << "\n\n";
 
-    } else if (isStraightFlush()) {
-        cout << "A Straight Flush!!\n";
+    if (plyrScr > dlerScr) {
+        cout << "Congratulation! You are the winner !!!\n";
+        return CardTableHelper::WIN;
 
-    } else if (isFlush()) {
-        cout << "A Flush!\n";
-
-    } else if (isStraight()) {
-        cout << "A Straight!\n";
-
-    } else if (isFourOfAKind()) {
-        cout << "Four of the same kind!\n";
-
-    } else if (isFullHouse()) {
-        cout << "Full house!\n";
-
-    } else if (isThreeOfAKind()) {
-        cout << "Three of the same kind!\n";
-
-    } else if (isTwoPairs()) {
-        cout << "Two pairs!\n";
-
-    } else if (isPair()) {
-        cout << "A pair!\n";
-
-    } else {
-        cout << "You lose !!!\n";
+    } else if (plyrScr < dlerScr) {
+        cout << "You lose!\n";
         return CardTableHelper::LOSE;
     }
-
-    cout << "Congratulation! You are the winner !!!\n";
-    return CardTableHelper::WIN;
+    cout << "Drawn game!!\n";
+    return CardTableHelper::DRAWN;
 }
 
 /**
@@ -429,3 +409,202 @@ void PokerCardTable::clean() {
     crSSuits.clear();
 }
 
+/**
+ * Reference to the declaration
+ * @return 
+ */
+int PokerCardTable::getHandScore() {
+
+    int sum = crSRnks[INDEX_0]->rank;
+    int e = BASE_SCORE;
+
+    for (int i = 1; i < crSRnks.size(); i++) {
+        sum += e * crSRnks[i]->rank;
+        e *= BASE_SCORE;
+    }
+
+    return sum;
+}
+
+/**
+ * Reference to the declaration
+ * @return 
+ */
+int PokerCardTable::getRoyalFlushScore() {
+    return ROYAL_FLUSH_SCORE + getHandScore();
+}
+
+/**
+ * Reference to the declaration
+ * @return 
+ */
+int PokerCardTable::getStraightFlushScore() {
+    return STRAIGHT_FLUSH_SCORE + getHandScore();
+}
+
+/**
+ * Reference to the declaration
+ * @return 
+ */
+int PokerCardTable::getFlushScore() {
+    return FLUSH_SCORE + getHandScore();
+}
+
+/**
+ * Reference to the declaration
+ * @return 
+ */
+int PokerCardTable::getStraightScore() {
+    return STRAIGHT_SCORE + getHandScore();
+}
+
+/**
+ * Reference to the declaration
+ * @return 
+ */
+int PokerCardTable::getFourOfAKindScore() {
+    return FOUR_OF_A_KIND_SCORE + crSRnks[INDEX_2]->rank;
+}
+
+/**
+ * Reference to the declaration
+ * @return 
+ */
+int PokerCardTable::getFullHouseScore() {
+    return FULL_HOUSE_SCORE + crSRnks[INDEX_2]->rank;
+}
+
+/**
+ * Reference to the declaration
+ * @return 
+ */
+int PokerCardTable::getThreeOfAKindScore() {
+    return THREE_OF_A_KIND_SCORE + crSRnks[INDEX_2]->rank;
+}
+
+/**
+ * Reference to the declaration
+ * @return 
+ */
+int PokerCardTable::getTwoPairScore() {
+    int sum = 0;
+
+    if ((crSRnks[INDEX_0]->rank == crSRnks[INDEX_1]->rank)
+            && (crSRnks[INDEX_2]->rank == crSRnks[INDEX_3]->rank)) {
+        //Case 2 + 2 + 1
+        sum = crSRnks[INDEX_4]->rank + (BASE_SCORE * crSRnks[INDEX_0]->rank)
+                + (BASE_SCORE * BASE_SCORE * crSRnks[INDEX_2]->rank);
+
+    } else if ((crSRnks[INDEX_0]->rank == crSRnks[INDEX_1]->rank)
+            && (crSRnks[INDEX_3]->rank == crSRnks[INDEX_4]->rank)) {
+        //Case 2 + 1 + 2
+        sum = crSRnks[INDEX_2]->rank + (BASE_SCORE * crSRnks[INDEX_0]->rank)
+                + (BASE_SCORE * BASE_SCORE * crSRnks[INDEX_3]->rank);
+        ;
+    } else {//Case 1 + 2 + 2
+
+        sum = crSRnks[INDEX_0]->rank + (BASE_SCORE * crSRnks[INDEX_1]->rank)
+                + (BASE_SCORE * BASE_SCORE * crSRnks[INDEX_3]->rank);
+
+    }
+
+    return TWO_PAIR_SCORE + sum;
+}
+
+/**
+ * Reference to the declaration
+ * @return 
+ */
+int PokerCardTable::getAPairScore() {
+
+    int sum = 0;
+    //Case: 2 + 1 + 1 + 1
+    if (crSRnks[INDEX_0]->rank == crSRnks[INDEX_1]->rank) {
+
+        sum = crSRnks[INDEX_2]->rank + BASE_SCORE * crSRnks[INDEX_3]->rank
+                + BASE_SCORE * BASE_SCORE * crSRnks[INDEX_4]->rank
+                + BASE_SCORE * BASE_SCORE * BASE_SCORE * crSRnks[INDEX_1]->rank;
+
+    } else if (crSRnks[INDEX_1]->rank == crSRnks[INDEX_2]->rank) {
+        //Case: 1 + 2 + 1 + 1 
+        sum = crSRnks[INDEX_0]->rank + BASE_SCORE * crSRnks[INDEX_3]->rank
+                + BASE_SCORE * BASE_SCORE * crSRnks[INDEX_4]->rank
+                + BASE_SCORE * BASE_SCORE * BASE_SCORE * crSRnks[INDEX_1]->rank;
+
+    } else if (crSRnks[INDEX_2]->rank == crSRnks[INDEX_3]->rank) {
+        //Case: 1 + 1 + 2 + 1 
+        sum = crSRnks[INDEX_0]->rank + BASE_SCORE * crSRnks[INDEX_1]->rank
+                + BASE_SCORE * BASE_SCORE * crSRnks[INDEX_4]->rank
+                + BASE_SCORE * BASE_SCORE * BASE_SCORE * crSRnks[INDEX_2]->rank;
+
+    } else {
+        //Case: 1 + 1 + 1 + 2 
+        sum = crSRnks[INDEX_0]->rank + BASE_SCORE * crSRnks[INDEX_1]->rank
+                + BASE_SCORE * BASE_SCORE * crSRnks[INDEX_2]->rank
+                + BASE_SCORE * BASE_SCORE * BASE_SCORE * crSRnks[INDEX_3]->rank;
+    }
+
+    return A_PAIR_SCORE + sum;
+}
+
+/**
+ * Reference to the declaration
+ * @param cards
+ * @return 
+ */
+int PokerCardTable::calPokerScore(const vector<Card*>& cards) {
+    //Sorting the current cards for checking a result
+    sortCardsByRank(cards);
+    sortCardsBySuit(cards);
+
+    if (isRoyalFlush()) {
+        cout << "A Royal Flush!!!\n";
+        return getRoyalFlushScore();
+
+    }
+
+    if (isStraightFlush()) {
+        cout << "A Straight Flush!!\n";
+        return getStraightFlushScore();
+
+    }
+
+    if (isFlush()) {
+        cout << "A Flush!\n";
+        return getFlushScore();
+    }
+
+    if (isStraight()) {
+        cout << "A Straight!\n";
+        return getStraightScore();
+    }
+
+    if (isFourOfAKind()) {
+        cout << "Four of the same kind!\n";
+        return getFourOfAKindScore();
+    }
+
+    if (isFullHouse()) {
+        cout << "Full house!\n";
+        return getFullHouseScore();
+
+    }
+
+    if (isThreeOfAKind()) {
+        cout << "Three of the same kind!\n";
+        return getThreeOfAKindScore();
+    }
+
+    if (isTwoPairs()) {
+        cout << "Two pairs!\n";
+        return getTwoPairScore();
+    }
+
+    if (isPair()) {
+        cout << "A pair!\n";
+        return getAPairScore();
+    }
+
+    return CardTableHelper::LOSE;
+
+}
