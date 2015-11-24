@@ -1,5 +1,5 @@
 /* 
- * File:   PokerHelper.h
+ * File:   CardTableHelper.h
  * Author: HaoHuynh
  *
  * Created on October 10, 2015, 10:35 AM

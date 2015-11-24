@@ -302,7 +302,7 @@ private:
 
     /** 
      * This function calculates the total Two Pair score of cards in a hand by:
-     * TWO_PAIR_SCORE + 10^2*First-Hight-Two-Pair + 10*Second-Hight-Two-Pair +  Low-Card
+     * TWO_PAIR_SCORE + 10^2*First-High-Two-Pair + 10*Second-High-Two-Pair +  Low-Card
      * @param cards
      * @return 
      */
@@ -310,7 +310,7 @@ private:
 
     /** 
      * This function calculates the total Pair score of cards in a hand by:
-     * A_PAIR_SCORE + 10^3*A-Pair + 10^2*First-Hight-Card + 10*Second-Hight-Card + Low-Card
+     * A_PAIR_SCORE + 10^3*A-Pair + 10^2*First-High-Card + 10*Second-High-Card + Low-Card
      * @param cards
      * @return 
      */
