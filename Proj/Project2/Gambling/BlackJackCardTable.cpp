@@ -61,7 +61,7 @@ CardTableHelper::GAME_BOOL BlackJackCardTable::isPlayerWin() {
         plyScre = BJ_BUST;
     }
 
-    if (dlrScre > BJ_UPPER_WINNER_LIMIT) {
+    if ((dlrScre > BJ_UPPER_WINNER_LIMIT) && (plyScre != BJ_BUST)) {
         dlrScre = BJ_BUST;
     }
 
@@ -142,7 +142,7 @@ int BlackJackCardTable::calculateScore(vector<Card*> cards) {
 
         }
     }
-    
+
     return result;
 }
 
